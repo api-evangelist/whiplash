@@ -1,0 +1,43 @@
+name: Whiplash API Rate Limits
+description: >-
+  The Whiplash (RyderShip) V2 API enforces rate limits on a per-customer-account
+  basis to ensure fair usage and platform stability. Rate limit information is
+  returned in HTTP response headers. Exceeding the rate limit may result in
+  temporary suspension of API access for extreme violations.
+url: https://help.whiplash.com/hc/en-us/articles/38805892080667-API-Rate-Limits-and-Best-Practices
+created: '2026-06-13'
+modified: '2026-06-13'
+limits:
+  - name: Requests Per Second
+    description: >-
+      The Whiplash V2 API enforces a limit of 10 requests per second per
+      customer account. Requests exceeding this limit will be rate limited.
+    rate: 10
+    unit: per_second
+    scope: per_customer_account
+    enforcement: >-
+      Exceeding the limit may result in rate limiting errors. Extreme or
+      repeated violations may result in temporary suspension of API access.
+  - name: Access Token TTL
+    description: >-
+      OAuth 2.0 Bearer access tokens expire after 2 hours (7200 seconds).
+      Use the provided refresh token to obtain a new access token before
+      or after expiry.
+    ttl_seconds: 7200
+    unit: seconds
+    notes: >-
+      Refresh tokens are regenerated each time they are used. Store and
+      rotate refresh tokens securely.
+headers:
+  - name: X-RateLimit-Limit
+    description: The maximum number of requests allowed in the current window
+  - name: X-RateLimit-Remaining
+    description: The number of requests remaining in the current window
+  - name: X-RateLimit-Reset
+    description: The time at which the current rate limit window resets (Unix timestamp)
+best_practices:
+  - Distribute requests evenly over time to avoid burst throttling
+  - When pulling large volumes of data, page through results rather than fetching all at once
+  - Implement exponential backoff and retry logic for 429 Too Many Requests responses
+  - Cache access tokens and refresh proactively before the 2-hour TTL expires
+  - Monitor response headers to track remaining quota in real time

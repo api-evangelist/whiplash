@@ -1,0 +1,79 @@
+aid: whiplash
+name: Whiplash
+description: >-
+  Whiplash is a multichannel order fulfillment and third-party logistics (3PL)
+  platform providing a REST API for managing orders, SKUs, inventory levels,
+  shipments, and returns across warehouse locations. Now operating as RyderShip
+  under Ryder System, the platform offers pre-built integrations with leading
+  ecommerce platforms including Shopify, and supports omnichannel fulfillment
+  for DTC, retail, and wholesale brands.
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+url: https://raw.githubusercontent.com/api-evangelist/whiplash/refs/heads/main/apis.yml
+created: '2026-06-13'
+modified: '2026-06-13'
+specificationVersion: '0.19'
+tags:
+  - Fulfillment
+  - 3PL
+  - Logistics
+  - Ecommerce
+  - Orders
+  - Inventory
+  - Shipments
+  - Returns
+  - Warehousing
+apis:
+  - aid: whiplash:whiplash-api
+    name: Whiplash API
+    description: >-
+      The Whiplash REST API (now RyderShip API) enables developers to manage
+      orders, items, inventory, shipments, consumer returns, customers, and
+      notification subscriptions programmatically. The API uses OAuth 2.0
+      Bearer token authentication and supports both authorization code and
+      client credentials flows.
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://help.whiplash.com/hc/en-us/categories/13378954544411-Whiplash-Application-Developers
+    baseURL: https://api.getwhiplash.com
+    tags:
+      - Orders
+      - Inventory
+      - Fulfillment
+      - Shipments
+      - Returns
+    properties:
+      - type: Documentation
+        url: https://help.whiplash.com/hc/en-us/categories/13378954544411-Whiplash-Application-Developers
+      - type: OpenAPI
+        url: https://developers.getwhiplash.com/api.v2.html
+      - type: Authentication
+        url: https://help.whiplash.com/hc/en-us/articles/360050870691-Authentication-for-the-V2-API
+      - type: RateLimits
+        url: https://help.whiplash.com/hc/en-us/articles/38805892080667-API-Rate-Limits-and-Best-Practices
+      - type: GitHubOrg
+        url: https://github.com/whiplashmerch
+common:
+  - type: Website
+    url: https://www.getwhiplash.com
+  - type: Documentation
+    url: https://help.whiplash.com/hc/en-us/categories/13378954544411-Whiplash-Application-Developers
+  - type: GitHubOrg
+    url: https://github.com/whiplashmerch
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/whiplash-merchandising-logistics
+  - type: Blog
+    url: https://www.getwhiplash.com/blog
+  - type: Pricing
+    url: https://www.getwhiplash.com/pricing
+  - type: StatusPage
+    url: https://status.getwhiplash.com
+  - type: X
+    url: https://x.com/getwhiplash
+  - type: Plans
+    url: plans/whiplash-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/whiplash-rate-limits.yml
+  - type: FinOps
+    url: finops/whiplash-finops.yml
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

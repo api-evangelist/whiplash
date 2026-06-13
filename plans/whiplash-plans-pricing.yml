@@ -1,0 +1,35 @@
+name: Whiplash Plans and Pricing
+description: >-
+  Whiplash (now RyderShip by Ryder) provides custom, quote-based pricing for
+  its 3PL and fulfillment services. Pricing is tailored to each client based on
+  order volume, storage requirements, SKU count, and service complexity. There
+  are no publicly disclosed standard tiers — all pricing is obtained by
+  contacting Whiplash directly. The platform is primarily designed for
+  mid-market to enterprise brands.
+url: https://www.getwhiplash.com/pricing
+created: '2026-06-13'
+modified: '2026-06-13'
+plans:
+  - name: Custom / Quote-Based
+    description: >-
+      Whiplash does not publish fixed pricing tiers. Clients receive a custom
+      quote based on their specific fulfillment needs, including inbound
+      receiving, storage, pick-and-pack, outbound shipping, and returns
+      processing. Minimums may apply.
+    url: https://www.getwhiplash.com/pricing
+    contact: https://www.getwhiplash.com/contact
+    features:
+      - Custom inbound receiving fees
+      - Storage fees (per pallet or bin, varies by warehouse location)
+      - Pick-and-pack fees (per order and per item)
+      - Outbound shipping (carrier rates passed through or negotiated)
+      - Returns processing
+      - Integration with Shopify, BigCommerce, and other platforms
+      - Access to Whiplash/RyderShip API
+      - Multi-warehouse network across the United States
+      - Dedicated account management
+    notes: >-
+      Smaller businesses and startups may find Whiplash's minimum volume
+      requirements prohibitive. The platform is optimized for brands shipping
+      hundreds to thousands of orders per day. Contact sales for a quote at
+      https://www.getwhiplash.com/contact.

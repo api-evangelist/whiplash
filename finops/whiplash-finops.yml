@@ -1,0 +1,67 @@
+name: Whiplash FinOps
+description: >-
+  Financial operations considerations for teams integrating with the Whiplash
+  (RyderShip) fulfillment platform and API. Whiplash uses custom, quote-based
+  pricing rather than metered API usage fees. The primary cost drivers are
+  physical fulfillment services — receiving, storage, pick-and-pack, and
+  shipping — not API call volume.
+url: https://www.getwhiplash.com/pricing
+created: '2026-06-13'
+modified: '2026-06-13'
+model: custom_quote
+api_cost_model: none
+notes: >-
+  Unlike SaaS APIs that charge per API call or per seat, Whiplash charges for
+  physical logistics services. API access is included with fulfillment contracts
+  and is not independently priced. All cost optimization efforts should focus on
+  fulfillment service consumption, not API usage.
+cost_drivers:
+  - name: Inbound Receiving
+    description: >-
+      Fees charged per pallet, carton, or unit received into Whiplash
+      warehouse facilities. Rates vary by warehouse location and inbound
+      complexity.
+    optimization: >-
+      Consolidate inbound shipments and ensure accurate ASNs (Advanced
+      Ship Notices) via the shipnotices API endpoint to reduce receiving
+      labor costs.
+  - name: Storage
+    description: >-
+      Monthly storage fees charged per pallet, shelf, or bin depending on
+      the warehouse and SKU profile. Rates vary by location and season.
+    optimization: >-
+      Maintain lean inventory levels using real-time stock data from the
+      items API endpoint. Avoid overstocking slow-moving SKUs to minimize
+      long-term storage charges.
+  - name: Pick and Pack
+    description: >-
+      Per-order and per-item fees for picking, packing, and preparing
+      outbound shipments. Multi-item orders carry higher costs.
+    optimization: >-
+      Use bundle_items API endpoints to pre-kit products and reduce
+      per-item pick costs on high-volume SKUs.
+  - name: Outbound Shipping
+    description: >-
+      Carrier costs passed through from FedEx, UPS, USPS, DHL, and other
+      carriers via Whiplash's EasyPost integration. Rates depend on
+      package dimensions, weight, destination zone, and service level.
+    optimization: >-
+      Use the orders API to assign optimal service levels. Monitor
+      shipments via the Whiplash dashboard to identify opportunities for
+      carrier and service-level optimization.
+  - name: Returns Processing
+    description: >-
+      Per-unit or per-order fees for processing consumer returns through
+      the consumer_returns API endpoint. Includes receiving, inspection,
+      restocking, and disposal.
+    optimization: >-
+      Automate return authorization via the consumer_returns API to
+      accelerate processing and reduce manual handling fees.
+visibility:
+  - Fulfillment costs are available in Whiplash billing reports and account dashboard
+  - API integrations can pull order and item data to build custom cost reporting
+  - No real-time API cost metering dashboard is available since API usage is not billed
+contacts:
+  - type: billing
+    url: https://www.getwhiplash.com/contact
+    description: Contact Whiplash account management for billing inquiries and custom pricing
