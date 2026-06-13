@@ -1,0 +1,148 @@
+{
+  "vocabulary": {
+    "name": "Whiplash (Rydership) API Vocabulary",
+    "description": "Domain vocabulary for the Whiplash/Rydership multichannel order fulfillment and 3PL platform API.",
+    "version": "2.0",
+    "source": "https://developers.getwhiplash.com/api.v2.html",
+    "terms": [
+      {
+        "term": "Order",
+        "type": "resource",
+        "description": "A sales order representing a request to fulfill one or more items to a customer. Orders have a lifecycle tracked via status, and support bulk creation, customs information, serial numbers, and associated documents.",
+        "endpoint": "/v2/orders"
+      },
+      {
+        "term": "Item",
+        "type": "resource",
+        "description": "An inventory item or SKU (Stock Keeping Unit) tracked in the Whiplash warehouse. Items have scancodes, can be bundled, and have inventory quantities tracked per warehouse location.",
+        "endpoint": "/v2/items"
+      },
+      {
+        "term": "ConsumerReturn",
+        "type": "resource",
+        "description": "Goods being returned from an end consumer back to the warehouse. Consumer returns can be created individually or in bulk and support meta fields for additional data.",
+        "endpoint": "/v2/consumer_returns"
+      },
+      {
+        "term": "Customer",
+        "type": "resource",
+        "description": "A customer record with contact information and addresses. Customers can be individuals or companies and have a status (active, inactive, suspended).",
+        "endpoint": "/v2/customers"
+      },
+      {
+        "term": "Document",
+        "type": "resource",
+        "description": "A document associated with orders or shipments, such as packing slips, labels, or customs forms.",
+        "endpoint": "/v2/documents"
+      },
+      {
+        "term": "Shipnotice",
+        "type": "resource",
+        "description": "An advance shipment notice (ASN) representing incoming inventory being sent to a Whiplash warehouse. Shipnotices contain individual shipnotice items.",
+        "endpoint": "/v2/shipnotices"
+      },
+      {
+        "term": "NotificationSubscription",
+        "type": "resource",
+        "description": "A webhook subscription that delivers event notifications to a specified URL when platform events occur (e.g., order shipped, inventory received).",
+        "endpoint": "/v2/notification_subscriptions"
+      },
+      {
+        "term": "NotificationEvent",
+        "type": "resource",
+        "description": "A historical record of an event that occurred in the system and was eligible for webhook delivery.",
+        "endpoint": "/v2/notification_events"
+      },
+      {
+        "term": "BundleItem",
+        "type": "resource",
+        "description": "A component item within a product bundle, defining the quantity relationship between the bundle SKU and its component SKUs.",
+        "endpoint": "/v2/bundle_items/{id}"
+      },
+      {
+        "term": "Originator",
+        "type": "resource",
+        "description": "A source platform or channel that originated an order or item (e.g., Shopify, WooCommerce).",
+        "endpoint": "/v2/originators"
+      },
+      {
+        "term": "Scancode",
+        "type": "resource",
+        "description": "A barcode or scan code (UPC, EAN, ASIN, etc.) associated with an inventory item, used for warehouse scanning operations.",
+        "endpoint": "/v2/scancodes"
+      },
+      {
+        "term": "Template",
+        "type": "resource",
+        "description": "A document template used for generating packing slips, labels, or other fulfillment documents.",
+        "endpoint": "/v2/templates/{id}"
+      },
+      {
+        "term": "LoadScac",
+        "type": "resource",
+        "description": "A Standard Carrier Alpha Code (SCAC) available for freight load configuration at Whiplash warehouses.",
+        "endpoint": "/v2/load_scacs"
+      },
+      {
+        "term": "MetaField",
+        "type": "sub-resource",
+        "description": "A custom key-value field that can be attached to orders, items, shipnotices, consumer returns, and order items to store additional data not covered by standard fields."
+      },
+      {
+        "term": "CustomField",
+        "type": "property",
+        "description": "An arbitrary key-value pair stored on a resource for client-specific data. Structured as {name, value} objects."
+      },
+      {
+        "term": "externalId",
+        "type": "property",
+        "description": "The identifier for a resource in the client's own system. Must be unique within a tenant and is used for idempotent operations and cross-system linking."
+      },
+      {
+        "term": "tenantId",
+        "type": "property",
+        "description": "The unique identifier for the merchant tenant that owns a resource in the Whiplash multi-tenant system. Read-only; assigned by the platform."
+      },
+      {
+        "term": "status",
+        "type": "property",
+        "description": "The current lifecycle state of a resource. For orders: pending, processing, shipped, cancelled, etc. For customers: active, inactive, suspended. For items: active, archived."
+      },
+      {
+        "term": "action",
+        "type": "operation",
+        "description": "A named operation that can be performed on a resource beyond standard CRUD. Examples include cancel, ship, archive. Actions are discovered via the /actions endpoint and triggered via /call/{action}."
+      },
+      {
+        "term": "bulk",
+        "type": "operation",
+        "description": "An endpoint suffix that allows creating multiple resources in a single API request, reducing round trips for high-volume operations."
+      },
+      {
+        "term": "simulate",
+        "type": "operation",
+        "description": "A set of sandbox endpoints under /v2/simulate/ that allow developers to create and process mock orders, consumer returns, and shipnotices without affecting live production data."
+      },
+      {
+        "term": "warehouseQuantity",
+        "type": "property",
+        "description": "The current inventory count of an item at a specific Whiplash warehouse location. Retrieved via /v2/items/{id}/warehouse_quantities."
+      },
+      {
+        "term": "bearerToken",
+        "type": "security",
+        "description": "The OAuth 2.0 Bearer token required in the Authorization header for all API requests. Obtained via authorization code or client credentials flow. See https://help.whiplash.com/hc/en-us/articles/360050870691"
+      },
+      {
+        "term": "3PL",
+        "type": "domain",
+        "description": "Third-Party Logistics — the core service model of Whiplash/Rydership, where the platform manages warehousing, picking, packing, and shipping on behalf of merchants."
+      },
+      {
+        "term": "DTC",
+        "type": "domain",
+        "description": "Direct-to-Consumer — a fulfillment channel where orders are shipped directly to end customers, as opposed to retail/wholesale fulfillment to store locations."
+      }
+    ]
+  }
+}

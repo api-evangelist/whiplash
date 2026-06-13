@@ -1,0 +1,84 @@
+{
+  "example": "Create Order",
+  "description": "Example request body for creating a new fulfillment order via POST /v2/orders",
+  "request": {
+    "method": "POST",
+    "url": "https://api.getwhiplash.com/v2/orders",
+    "headers": {
+      "Authorization": "Bearer {access_token}",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "externalId": "SHOPIFY-ORD-10045",
+      "name": "Order #10045",
+      "currency": "USD",
+      "shippingAddress": {
+        "firstName": "Jane",
+        "lastName": "Smith",
+        "address1": "456 Oak Avenue",
+        "address2": "Apt 3B",
+        "city": "Portland",
+        "stateOrProvince": "OR",
+        "zipCodeOrPostalCode": "97201",
+        "country": "US",
+        "email": "jane.smith@example.com",
+        "phone": "+1-503-555-0100"
+      },
+      "billingAddress": {
+        "firstName": "Jane",
+        "lastName": "Smith",
+        "address1": "456 Oak Avenue",
+        "city": "Portland",
+        "stateOrProvince": "OR",
+        "zipCodeOrPostalCode": "97201",
+        "country": "US",
+        "email": "jane.smith@example.com"
+      },
+      "customFields": [
+        { "name": "shopify_order_id", "value": "gid://shopify/Order/5678901234" },
+        { "name": "channel", "value": "online_store" }
+      ],
+      "tags": ["priority", "gift"]
+    }
+  },
+  "response": {
+    "status": 201,
+    "body": {
+      "id": "ord_abc123xyz",
+      "externalId": "SHOPIFY-ORD-10045",
+      "tenantId": "tenant_merchant_456",
+      "name": "Order #10045",
+      "status": "pending",
+      "currency": "USD",
+      "createdAt": "2026-06-13T14:00:00Z",
+      "updatedAt": "2026-06-13T14:00:00Z",
+      "shippingAddress": {
+        "firstName": "Jane",
+        "lastName": "Smith",
+        "address1": "456 Oak Avenue",
+        "address2": "Apt 3B",
+        "city": "Portland",
+        "stateOrProvince": "OR",
+        "zipCodeOrPostalCode": "97201",
+        "country": "US",
+        "email": "jane.smith@example.com",
+        "phone": "+1-503-555-0100"
+      },
+      "billingAddress": {
+        "firstName": "Jane",
+        "lastName": "Smith",
+        "address1": "456 Oak Avenue",
+        "city": "Portland",
+        "stateOrProvince": "OR",
+        "zipCodeOrPostalCode": "97201",
+        "country": "US",
+        "email": "jane.smith@example.com"
+      },
+      "customFields": [
+        { "name": "shopify_order_id", "value": "gid://shopify/Order/5678901234" },
+        { "name": "channel", "value": "online_store" }
+      ],
+      "tags": ["priority", "gift"]
+    }
+  }
+}

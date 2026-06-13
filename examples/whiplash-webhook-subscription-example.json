@@ -1,0 +1,39 @@
+{
+  "example": "Create Notification Subscription",
+  "description": "Example for creating a webhook subscription via POST /v2/notification_subscriptions",
+  "request": {
+    "method": "POST",
+    "url": "https://api.getwhiplash.com/v2/notification_subscriptions",
+    "headers": {
+      "Authorization": "Bearer {access_token}",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "url": "https://mystore.example.com/webhooks/whiplash",
+      "events": [
+        "order.shipped",
+        "order.cancelled",
+        "consumer_return.received",
+        "shipnotice.received"
+      ],
+      "active": true
+    }
+  },
+  "response": {
+    "status": 201,
+    "body": {
+      "id": "sub_ns_001abc",
+      "tenantId": "tenant_merchant_456",
+      "url": "https://mystore.example.com/webhooks/whiplash",
+      "events": [
+        "order.shipped",
+        "order.cancelled",
+        "consumer_return.received",
+        "shipnotice.received"
+      ],
+      "active": true,
+      "createdAt": "2026-06-13T15:00:00Z",
+      "updatedAt": "2026-06-13T15:00:00Z"
+    }
+  }
+}

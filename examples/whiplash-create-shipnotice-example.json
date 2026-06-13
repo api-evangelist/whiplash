@@ -1,0 +1,44 @@
+{
+  "example": "Create Shipnotice",
+  "description": "Example request body for creating an advance shipment notice (ASN) via POST /v2/shipnotices",
+  "request": {
+    "method": "POST",
+    "url": "https://api.getwhiplash.com/v2/shipnotices",
+    "headers": {
+      "Authorization": "Bearer {access_token}",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "externalId": "PO-2026-001",
+      "expectedArrivalDate": "2026-06-20",
+      "warehouseId": "warehouse_la_01",
+      "items": [
+        {
+          "sku": "WIDGET-BLU-LG",
+          "quantity": 500
+        },
+        {
+          "sku": "WIDGET-RED-MD",
+          "quantity": 250
+        }
+      ],
+      "customFields": [
+        { "name": "supplier", "value": "Acme Manufacturing" },
+        { "name": "po_number", "value": "PO-2026-001" }
+      ]
+    }
+  },
+  "response": {
+    "status": 201,
+    "body": {
+      "id": "sn_xyz789abc",
+      "externalId": "PO-2026-001",
+      "tenantId": "tenant_merchant_456",
+      "status": "pending",
+      "expectedArrivalDate": "2026-06-20",
+      "warehouseId": "warehouse_la_01",
+      "createdAt": "2026-06-13T14:30:00Z",
+      "updatedAt": "2026-06-13T14:30:00Z"
+    }
+  }
+}
