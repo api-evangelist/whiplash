@@ -52,6 +52,10 @@ apis:
       - type: GitHubOrg
         url: https://github.com/whiplashmerch
 common:
+  - type: DomainSecurity
+    url: security/whiplash-domain-security.yml
+  - type: Authentication
+    url: authentication/whiplash-authentication.yml
   - type: Website
     url: https://www.getwhiplash.com
   - type: Documentation
