@@ -52,6 +52,8 @@ apis:
       - type: GitHubOrg
         url: https://github.com/whiplashmerch
 common:
+  - type: AgenticAccess
+    url: agentic-access/whiplash-agentic-access.yml
   - type: DomainSecurity
     url: security/whiplash-domain-security.yml
   - type: Authentication
