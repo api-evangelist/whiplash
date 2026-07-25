@@ -1,0 +1,494 @@
+openapi: 3.0.3
+info:
+  title: Whiplash (Rydership) Bundle Items Orders API
+  description: The Whiplash REST API (now RyderShip API under Ryder System) enables developers to manage orders, items, inventory, shipments, consumer returns, customers, notification subscriptions, and documents programmatically. The API uses OAuth 2.0 Bearer token authentication and supports both authorization code and client credentials flows. The V2 API is open by invite only.
+  version: '2.0'
+  contact:
+    name: Rydership Development Team
+    email: tech@whiplash.com
+    url: https://www.getwhiplash.com
+  x-logo:
+    url: https://wl-s3-assets.s3.amazonaws.com/rydership/RyderShip-horizontal-safe-padding.svg
+servers:
+- url: https://api.getwhiplash.com
+  description: Whiplash Production API
+security:
+- bearerAuth: []
+tags:
+- name: Orders
+  description: Order processing — full CRUD, bulk creation, actions, customs info, history, documents, items, serial numbers, shipping details, and wholesale
+paths:
+  /v2/orders:
+    get:
+      operationId: listOrders
+      summary: List orders
+      description: Returns a paginated list of orders.
+      tags:
+      - Orders
+      parameters:
+      - $ref: '#/components/parameters/PageParam'
+      - $ref: '#/components/parameters/LimitParam'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createOrder
+      summary: Create an order
+      description: Creates a new order.
+      tags:
+      - Orders
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderInput'
+      responses:
+        '201':
+          description: Order created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /v2/orders/bulk:
+    post:
+      operationId: bulkCreateOrders
+      summary: Bulk create orders
+      description: Creates multiple orders in a single request.
+      tags:
+      - Orders
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/OrderInput'
+      responses:
+        '201':
+          description: Orders created
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/orders/count:
+    get:
+      operationId: countOrders
+      summary: Count orders
+      description: Returns the total count of orders.
+      tags:
+      - Orders
+      responses:
+        '200':
+          description: Count response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CountResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/orders/actions:
+    get:
+      operationId: listOrderActions
+      summary: List available order actions
+      description: Returns available actions that can be performed on orders.
+      tags:
+      - Orders
+      responses:
+        '200':
+          description: Available actions
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/orders/{id}:
+    get:
+      operationId: getOrder
+      summary: Retrieve an order
+      description: Returns details for a specific order by ID.
+      tags:
+      - Orders
+      parameters:
+      - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Order details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: updateOrder
+      summary: Update an order
+      description: Updates an existing order.
+      tags:
+      - Orders
+      parameters:
+      - $ref: '#/components/parameters/IdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderInput'
+      responses:
+        '200':
+          description: Order updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v2/orders/{id}/call/{action}:
+    post:
+      operationId: performOrderAction
+      summary: Perform an action on an order
+      description: Performs a named action on a specific order (e.g., cancel, ship).
+      tags:
+      - Orders
+      parameters:
+      - $ref: '#/components/parameters/IdParam'
+      - name: action
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The action to perform on the order
+      responses:
+        '200':
+          description: Action performed
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v2/orders/{id}/customs_info:
+    get:
+      operationId: getOrderCustomsInfo
+      summary: Get order customs information
+      description: Returns customs information for a specific order.
+      tags:
+      - Orders
+      parameters:
+      - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Customs information
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v2/orders/{id}/events:
+    get:
+      operationId: listOrderEvents
+      summary: List order events
+      description: Returns the history/events for a specific order.
+      tags:
+      - Orders
+      parameters:
+      - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Order events
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v2/orders/{id}/events/count:
+    get:
+      operationId: countOrderEvents
+      summary: Count order events
+      tags:
+      - Orders
+      parameters:
+      - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Event count
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CountResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/orders/{id}/order_items:
+    get:
+      operationId: listOrderItems
+      summary: List items in an order
+      tags:
+      - Orders
+      parameters:
+      - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Order items
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/orders/{id}/order_items/count:
+    get:
+      operationId: countOrderItems
+      summary: Count items in an order
+      tags:
+      - Orders
+      parameters:
+      - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Item count
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CountResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/orders/{id}/serial_numbers:
+    get:
+      operationId: listOrderSerialNumbers
+      summary: List serial numbers for an order
+      tags:
+      - Orders
+      parameters:
+      - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Serial numbers
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/orders/{id}/order_documents:
+    get:
+      operationId: listOrderDocuments
+      summary: List documents for an order
+      tags:
+      - Orders
+      parameters:
+      - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Order documents
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/orders/{id}/order_documents/count:
+    get:
+      operationId: countOrderDocuments
+      summary: Count documents for an order
+      tags:
+      - Orders
+      parameters:
+      - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Document count
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CountResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/orders/{id}/shipping_documents:
+    get:
+      operationId: listOrderShippingDocuments
+      summary: List shipping documents for an order
+      tags:
+      - Orders
+      parameters:
+      - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Shipping documents
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/orders/{id}/meta_fields:
+    get:
+      operationId: listOrderMetaFields
+      summary: List meta fields for an order
+      tags:
+      - Orders
+      parameters:
+      - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Meta fields
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  parameters:
+    IdParam:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Unique identifier of the resource
+    LimitParam:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 500
+      description: Number of results per page
+    PageParam:
+      name: page
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Page number for pagination
+  schemas:
+    Order:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+          description: System-generated unique identifier
+        externalId:
+          type: string
+          description: ID in the client's system; must be unique within the tenant
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+        tenantId:
+          type: string
+          readOnly: true
+        name:
+          type: string
+          description: Order name
+        status:
+          type: string
+          description: Order status
+        currency:
+          type: string
+          description: Order currency code
+        billingAddress:
+          $ref: '#/components/schemas/Address'
+        shippingAddress:
+          $ref: '#/components/schemas/Address'
+        customFields:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomField'
+        tags:
+          type: array
+          items:
+            type: string
+    ErrorResponse:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: string
+    CustomField:
+      type: object
+      required:
+      - name
+      - value
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+    CountResponse:
+      type: object
+      properties:
+        count:
+          type: integer
+          description: Total number of matching resources
+    Address:
+      type: object
+      properties:
+        address1:
+          type: string
+          description: Primary street address
+        address2:
+          type: string
+          description: Secondary address (apartment, suite, unit)
+        city:
+          type: string
+          description: City or town
+        company:
+          type: string
+          description: Company name
+        country:
+          type: string
+          description: ISO 3166-1 alpha-2 country code (e.g., US, CA, GB)
+        email:
+          type: string
+          format: email
+        firstName:
+          type: string
+        lastName:
+          type: string
+        phone:
+          type: string
+          description: Phone including country code (e.g., +1-555-123-4567)
+        stateOrProvince:
+          type: string
+          description: State/province; use 2-letter code for US (e.g., CA, NY)
+        zipCodeOrPostalCode:
+          type: string
+    OrderInput:
+      type: object
+      properties:
+        externalId:
+          type: string
+        name:
+          type: string
+        currency:
+          type: string
+        billingAddress:
+          $ref: '#/components/schemas/Address'
+        shippingAddress:
+          $ref: '#/components/schemas/Address'
+        customFields:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomField'
+        tags:
+          type: array
+          items:
+            type: string
+  responses:
+    NotFound:
+      description: Resource not found
+    UnprocessableEntity:
+      description: Validation error — the request body contains invalid data
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Unauthorized — invalid or missing Bearer token
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: OAuth2
+      description: OAuth 2.0 Bearer token. Obtain via authorization code or client credentials flow. See https://help.whiplash.com/hc/en-us/articles/360050870691-Authentication-for-the-V2-API
+externalDocs:
+  description: Whiplash API Developer Documentation
+  url: https://help.whiplash.com/hc/en-us/categories/13378954544411-Whiplash-Application-Developers

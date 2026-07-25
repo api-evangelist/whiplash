@@ -1,0 +1,471 @@
+openapi: 3.0.3
+info:
+  title: Whiplash (Rydership) Bundle Items API
+  description: The Whiplash REST API (now RyderShip API under Ryder System) enables developers to manage orders, items, inventory, shipments, consumer returns, customers, notification subscriptions, and documents programmatically. The API uses OAuth 2.0 Bearer token authentication and supports both authorization code and client credentials flows. The V2 API is open by invite only.
+  version: '2.0'
+  contact:
+    name: Rydership Development Team
+    email: tech@whiplash.com
+    url: https://www.getwhiplash.com
+  x-logo:
+    url: https://wl-s3-assets.s3.amazonaws.com/rydership/RyderShip-horizontal-safe-padding.svg
+servers:
+- url: https://api.getwhiplash.com
+  description: Whiplash Production API
+security:
+- bearerAuth: []
+tags:
+- name: Items
+  description: Inventory item management — list, create, count, retrieve, update, archive, bundles, actions, locations, meta fields, originators, scancodes, history, and stock by warehouse
+paths:
+  /v2/items:
+    get:
+      operationId: listItems
+      summary: List items
+      description: Returns a paginated list of inventory items (SKUs).
+      tags:
+      - Items
+      parameters:
+      - $ref: '#/components/parameters/PageParam'
+      - $ref: '#/components/parameters/LimitParam'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Item'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createItem
+      summary: Create an item
+      description: Creates a new inventory item (SKU).
+      tags:
+      - Items
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ItemInput'
+      responses:
+        '201':
+          description: Item created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /v2/items/count:
+    get:
+      operationId: countItems
+      summary: Count items
+      tags:
+      - Items
+      responses:
+        '200':
+          description: Count response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CountResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/items/actions:
+    get:
+      operationId: listItemActions
+      summary: List available item actions
+      tags:
+      - Items
+      responses:
+        '200':
+          description: Available actions
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/items/{id}:
+    get:
+      operationId: getItem
+      summary: Retrieve an item
+      description: Returns details for a specific inventory item by ID.
+      tags:
+      - Items
+      parameters:
+      - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Item details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: updateItem
+      summary: Update an item
+      tags:
+      - Items
+      parameters:
+      - $ref: '#/components/parameters/IdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ItemInput'
+      responses:
+        '200':
+          description: Item updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v2/items/{id}/call/{action}:
+    post:
+      operationId: performItemAction
+      summary: Perform an action on an item
+      description: Performs a named action on a specific item (e.g., archive).
+      tags:
+      - Items
+      parameters:
+      - $ref: '#/components/parameters/IdParam'
+      - name: action
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The action to perform on the item
+      responses:
+        '200':
+          description: Action performed
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/items/{id}/meta_fields:
+    get:
+      operationId: listItemMetaFields
+      summary: List meta fields for an item
+      tags:
+      - Items
+      parameters:
+      - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Meta fields
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/items/{id}/warehouse_quantities:
+    get:
+      operationId: getItemWarehouseQuantities
+      summary: Get item stock by warehouse
+      description: Returns inventory quantities for a specific item across warehouse locations.
+      tags:
+      - Items
+      parameters:
+      - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Warehouse quantities
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/items/{id}/transactions:
+    get:
+      operationId: listItemTransactions
+      summary: List inventory transactions for an item
+      tags:
+      - Items
+      parameters:
+      - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Inventory transactions
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/items/{id}/transactions/count:
+    get:
+      operationId: countItemTransactions
+      summary: Count inventory transactions for an item
+      tags:
+      - Items
+      parameters:
+      - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Transaction count
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CountResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/items/{id}/transactions/export:
+    get:
+      operationId: exportItemTransactions
+      summary: Export inventory transactions for an item
+      tags:
+      - Items
+      parameters:
+      - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Exported transactions
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/items/{id}/scancodes:
+    get:
+      operationId: listItemScancodes
+      summary: List scancodes for an item
+      tags:
+      - Items
+      parameters:
+      - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Scancodes
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/items/{id}/bundle_items:
+    get:
+      operationId: listItemBundleComponents
+      summary: List bundle components for an item
+      tags:
+      - Items
+      parameters:
+      - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Bundle components
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/items/{id}/originators:
+    get:
+      operationId: listItemOriginators
+      summary: List originators for an item
+      tags:
+      - Items
+      parameters:
+      - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Originators
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/items/{id}/originators/count:
+    get:
+      operationId: countItemOriginators
+      summary: Count originators for an item
+      tags:
+      - Items
+      parameters:
+      - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Originator count
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CountResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/items/{id}/shipnotice_items:
+    get:
+      operationId: listItemShipnoticeItems
+      summary: List shipnotice items for an item
+      tags:
+      - Items
+      parameters:
+      - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Shipnotice items
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/items/{id}/shipnotice_items/count:
+    get:
+      operationId: countItemShipnoticeItems
+      summary: Count shipnotice items for an item
+      tags:
+      - Items
+      parameters:
+      - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Shipnotice item count
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CountResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/load_scacs:
+    get:
+      operationId: listLoadScacs
+      summary: List load SCACs
+      description: Returns Standard Carrier Alpha Codes (SCACs) available for load configuration.
+      tags:
+      - Items
+      responses:
+        '200':
+          description: Load SCACs list
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/load_scacs/count:
+    get:
+      operationId: countLoadScacs
+      summary: Count load SCACs
+      tags:
+      - Items
+      responses:
+        '200':
+          description: Count response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CountResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  parameters:
+    IdParam:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Unique identifier of the resource
+    LimitParam:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 500
+      description: Number of results per page
+    PageParam:
+      name: page
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Page number for pagination
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: string
+    CustomField:
+      type: object
+      required:
+      - name
+      - value
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+    CountResponse:
+      type: object
+      properties:
+        count:
+          type: integer
+          description: Total number of matching resources
+    Item:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+        externalId:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+        tenantId:
+          type: string
+          readOnly: true
+        sku:
+          type: string
+          description: Stock Keeping Unit identifier
+        name:
+          type: string
+          description: Item name or description
+        status:
+          type: string
+          description: Item status (e.g., active, archived)
+        weight:
+          type: number
+          description: Item weight
+        weightUnit:
+          type: string
+          description: Weight unit (e.g., oz, lb, g, kg)
+        customFields:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomField'
+        tags:
+          type: array
+          items:
+            type: string
+    ItemInput:
+      type: object
+      properties:
+        externalId:
+          type: string
+        sku:
+          type: string
+        name:
+          type: string
+        weight:
+          type: number
+        weightUnit:
+          type: string
+        customFields:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomField'
+        tags:
+          type: array
+          items:
+            type: string
+  responses:
+    NotFound:
+      description: Resource not found
+    UnprocessableEntity:
+      description: Validation error — the request body contains invalid data
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Unauthorized — invalid or missing Bearer token
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: OAuth2
+      description: OAuth 2.0 Bearer token. Obtain via authorization code or client credentials flow. See https://help.whiplash.com/hc/en-us/articles/360050870691-Authentication-for-the-V2-API
+externalDocs:
+  description: Whiplash API Developer Documentation
+  url: https://help.whiplash.com/hc/en-us/categories/13378954544411-Whiplash-Application-Developers

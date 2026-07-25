@@ -1,0 +1,259 @@
+openapi: 3.0.3
+info:
+  title: Whiplash (Rydership) Bundle Items Customers API
+  description: The Whiplash REST API (now RyderShip API under Ryder System) enables developers to manage orders, items, inventory, shipments, consumer returns, customers, notification subscriptions, and documents programmatically. The API uses OAuth 2.0 Bearer token authentication and supports both authorization code and client credentials flows. The V2 API is open by invite only.
+  version: '2.0'
+  contact:
+    name: Rydership Development Team
+    email: tech@whiplash.com
+    url: https://www.getwhiplash.com
+  x-logo:
+    url: https://wl-s3-assets.s3.amazonaws.com/rydership/RyderShip-horizontal-safe-padding.svg
+servers:
+- url: https://api.getwhiplash.com
+  description: Whiplash Production API
+security:
+- bearerAuth: []
+tags:
+- name: Customers
+  description: Customer management — list, count, retrieve, update, and available actions
+paths:
+  /v2/customers:
+    get:
+      operationId: listCustomers
+      summary: List customers
+      description: Returns a paginated list of customers.
+      tags:
+      - Customers
+      parameters:
+      - $ref: '#/components/parameters/PageParam'
+      - $ref: '#/components/parameters/LimitParam'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/customers/count:
+    get:
+      operationId: countCustomers
+      summary: Count customers
+      tags:
+      - Customers
+      responses:
+        '200':
+          description: Count response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CountResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/customers/actions:
+    get:
+      operationId: listCustomerActions
+      summary: List available customer actions
+      tags:
+      - Customers
+      responses:
+        '200':
+          description: Available actions
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/customers/{id}:
+    get:
+      operationId: getCustomer
+      summary: Retrieve a customer
+      tags:
+      - Customers
+      parameters:
+      - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Customer details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: updateCustomer
+      summary: Update a customer
+      tags:
+      - Customers
+      parameters:
+      - $ref: '#/components/parameters/IdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+      responses:
+        '200':
+          description: Customer updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  parameters:
+    IdParam:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Unique identifier of the resource
+    LimitParam:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 500
+      description: Number of results per page
+    PageParam:
+      name: page
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Page number for pagination
+  responses:
+    NotFound:
+      description: Resource not found
+    Unauthorized:
+      description: Unauthorized — invalid or missing Bearer token
+  schemas:
+    CustomField:
+      type: object
+      required:
+      - name
+      - value
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+    CountResponse:
+      type: object
+      properties:
+        count:
+          type: integer
+          description: Total number of matching resources
+    Address:
+      type: object
+      properties:
+        address1:
+          type: string
+          description: Primary street address
+        address2:
+          type: string
+          description: Secondary address (apartment, suite, unit)
+        city:
+          type: string
+          description: City or town
+        company:
+          type: string
+          description: Company name
+        country:
+          type: string
+          description: ISO 3166-1 alpha-2 country code (e.g., US, CA, GB)
+        email:
+          type: string
+          format: email
+        firstName:
+          type: string
+        lastName:
+          type: string
+        phone:
+          type: string
+          description: Phone including country code (e.g., +1-555-123-4567)
+        stateOrProvince:
+          type: string
+          description: State/province; use 2-letter code for US (e.g., CA, NY)
+        zipCodeOrPostalCode:
+          type: string
+    Customer:
+      type: object
+      required:
+      - id
+      - createdAt
+      - updatedAt
+      - tenantId
+      properties:
+        id:
+          type: string
+          readOnly: true
+        externalId:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+        tenantId:
+          type: string
+          readOnly: true
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        status:
+          type: string
+          description: Customer status (e.g., active, inactive, suspended)
+        type:
+          type: string
+          description: Customer type (e.g., individual, company)
+        notes:
+          type: string
+        addresses:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              address:
+                $ref: '#/components/schemas/Address'
+        customFields:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomField'
+        tags:
+          type: array
+          items:
+            type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: OAuth2
+      description: OAuth 2.0 Bearer token. Obtain via authorization code or client credentials flow. See https://help.whiplash.com/hc/en-us/articles/360050870691-Authentication-for-the-V2-API
+externalDocs:
+  description: Whiplash API Developer Documentation
+  url: https://help.whiplash.com/hc/en-us/categories/13378954544411-Whiplash-Application-Developers

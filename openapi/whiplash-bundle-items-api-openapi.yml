@@ -1,0 +1,96 @@
+openapi: 3.0.3
+info:
+  title: Whiplash (Rydership) Bundle Items API
+  description: The Whiplash REST API (now RyderShip API under Ryder System) enables developers to manage orders, items, inventory, shipments, consumer returns, customers, notification subscriptions, and documents programmatically. The API uses OAuth 2.0 Bearer token authentication and supports both authorization code and client credentials flows. The V2 API is open by invite only.
+  version: '2.0'
+  contact:
+    name: Rydership Development Team
+    email: tech@whiplash.com
+    url: https://www.getwhiplash.com
+  x-logo:
+    url: https://wl-s3-assets.s3.amazonaws.com/rydership/RyderShip-horizontal-safe-padding.svg
+servers:
+- url: https://api.getwhiplash.com
+  description: Whiplash Production API
+security:
+- bearerAuth: []
+tags:
+- name: Bundle Items
+  description: Components defining quantity and relationships within product bundles — retrieve, update quantity, and destroy
+paths:
+  /v2/bundle_items/{id}:
+    get:
+      operationId: getBundleItem
+      summary: Retrieve a bundle item
+      description: Returns details for a specific bundle component.
+      tags:
+      - Bundle Items
+      parameters:
+      - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Bundle item details
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: updateBundleItemQuantity
+      summary: Update bundle item quantity
+      tags:
+      - Bundle Items
+      parameters:
+      - $ref: '#/components/parameters/IdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  type: integer
+      responses:
+        '200':
+          description: Bundle item updated
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteBundleItem
+      summary: Delete a bundle item
+      tags:
+      - Bundle Items
+      parameters:
+      - $ref: '#/components/parameters/IdParam'
+      responses:
+        '204':
+          description: Bundle item deleted
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  parameters:
+    IdParam:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Unique identifier of the resource
+  responses:
+    Unauthorized:
+      description: Unauthorized — invalid or missing Bearer token
+    NotFound:
+      description: Resource not found
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: OAuth2
+      description: OAuth 2.0 Bearer token. Obtain via authorization code or client credentials flow. See https://help.whiplash.com/hc/en-us/articles/360050870691-Authentication-for-the-V2-API
+externalDocs:
+  description: Whiplash API Developer Documentation
+  url: https://help.whiplash.com/hc/en-us/categories/13378954544411-Whiplash-Application-Developers

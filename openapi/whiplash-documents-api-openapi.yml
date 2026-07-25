@@ -1,0 +1,146 @@
+openapi: 3.0.3
+info:
+  title: Whiplash (Rydership) Bundle Items Documents API
+  description: The Whiplash REST API (now RyderShip API under Ryder System) enables developers to manage orders, items, inventory, shipments, consumer returns, customers, notification subscriptions, and documents programmatically. The API uses OAuth 2.0 Bearer token authentication and supports both authorization code and client credentials flows. The V2 API is open by invite only.
+  version: '2.0'
+  contact:
+    name: Rydership Development Team
+    email: tech@whiplash.com
+    url: https://www.getwhiplash.com
+  x-logo:
+    url: https://wl-s3-assets.s3.amazonaws.com/rydership/RyderShip-horizontal-safe-padding.svg
+servers:
+- url: https://api.getwhiplash.com
+  description: Whiplash Production API
+security:
+- bearerAuth: []
+tags:
+- name: Documents
+  description: Document handling — list, create, retrieve, destroy, and actions
+paths:
+  /v2/documents:
+    get:
+      operationId: listDocuments
+      summary: List documents
+      tags:
+      - Documents
+      parameters:
+      - $ref: '#/components/parameters/PageParam'
+      - $ref: '#/components/parameters/LimitParam'
+      responses:
+        '200':
+          description: Documents list
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createDocument
+      summary: Create a document
+      tags:
+      - Documents
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '201':
+          description: Document created
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/documents/actions:
+    get:
+      operationId: listDocumentActions
+      summary: List available document actions
+      tags:
+      - Documents
+      responses:
+        '200':
+          description: Available actions
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v2/documents/{id}:
+    get:
+      operationId: getDocument
+      summary: Retrieve a document
+      tags:
+      - Documents
+      parameters:
+      - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Document details
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteDocument
+      summary: Delete a document
+      tags:
+      - Documents
+      parameters:
+      - $ref: '#/components/parameters/IdParam'
+      responses:
+        '204':
+          description: Document deleted
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v2/templates/{id}:
+    get:
+      operationId: getTemplate
+      summary: Retrieve a template
+      tags:
+      - Documents
+      parameters:
+      - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Template details
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  parameters:
+    IdParam:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Unique identifier of the resource
+    LimitParam:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 500
+      description: Number of results per page
+    PageParam:
+      name: page
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Page number for pagination
+  responses:
+    NotFound:
+      description: Resource not found
+    Unauthorized:
+      description: Unauthorized — invalid or missing Bearer token
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: OAuth2
+      description: OAuth 2.0 Bearer token. Obtain via authorization code or client credentials flow. See https://help.whiplash.com/hc/en-us/articles/360050870691-Authentication-for-the-V2-API
+externalDocs:
+  description: Whiplash API Developer Documentation
+  url: https://help.whiplash.com/hc/en-us/categories/13378954544411-Whiplash-Application-Developers
