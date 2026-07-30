@@ -7,7 +7,20 @@ description: >-
   under Ryder System, the platform offers pre-built integrations with leading
   ecommerce platforms including Shopify, and supports omnichannel fulfillment
   for DTC, retail, and wholesale brands.
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: enterprise
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Enterprise · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/whiplash.png
 url: https://raw.githubusercontent.com/api-evangelist/whiplash/refs/heads/main/apis.yml
 created: '2026-06-13'
 modified: '2026-06-13'
@@ -23,34 +36,228 @@ tags:
   - Returns
   - Warehousing
 apis:
-  - aid: whiplash:whiplash-api
-    name: Whiplash API
-    description: >-
-      The Whiplash REST API (now RyderShip API) enables developers to manage
-      orders, items, inventory, shipments, consumer returns, customers, and
-      notification subscriptions programmatically. The API uses OAuth 2.0
-      Bearer token authentication and supports both authorization code and
-      client credentials flows.
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    humanURL: https://help.whiplash.com/hc/en-us/categories/13378954544411-Whiplash-Application-Developers
-    baseURL: https://api.getwhiplash.com
-    tags:
-      - Orders
-      - Inventory
-      - Fulfillment
-      - Shipments
-      - Returns
-    properties:
-      - type: Documentation
-        url: https://help.whiplash.com/hc/en-us/categories/13378954544411-Whiplash-Application-Developers
-      - type: OpenAPI
-        url: https://developers.getwhiplash.com/api.v2.html
-      - type: Authentication
-        url: https://help.whiplash.com/hc/en-us/articles/360050870691-Authentication-for-the-V2-API
-      - type: RateLimits
-        url: https://help.whiplash.com/hc/en-us/articles/38805892080667-API-Rate-Limits-and-Best-Practices
-      - type: GitHubOrg
-        url: https://github.com/whiplashmerch
+- aid: whiplash:whiplash-bundle-items-api
+  name: Whiplash Bundle Items API
+  description: >-
+    Components defining quantity and relationships within product bundles — retrieve, update quantity,
+    and destroy
+  humanURL: >-
+    https://help.whiplash.com/hc/en-us/categories/13378954544411-Whiplash-Application-Developers
+  baseURL: https://api.getwhiplash.com
+  tags:
+  - Bundle Items
+  properties:
+  - type: OpenAPI
+    url: openapi/whiplash-bundle-items-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://help.whiplash.com/hc/en-us/categories/13378954544411-Whiplash-Application-Developers
+  - type: Authentication
+    url: https://help.whiplash.com/hc/en-us/articles/360050870691-Authentication-for-the-V2-API
+  - type: RateLimits
+    url: >-
+      https://help.whiplash.com/hc/en-us/articles/38805892080667-API-Rate-Limits-and-Best-Practices
+  - type: GitHubOrg
+    url: https://github.com/whiplashmerch
+- aid: whiplash:whiplash-consumer-returns-api
+  name: Whiplash Consumer Returns API
+  description: >-
+    Goods returning from end consumers — list, create (single/bulk), count, retrieve, update, destroy,
+    and meta fields
+  humanURL: >-
+    https://help.whiplash.com/hc/en-us/categories/13378954544411-Whiplash-Application-Developers
+  baseURL: https://api.getwhiplash.com
+  tags:
+  - Consumer Returns
+  properties:
+  - type: OpenAPI
+    url: openapi/whiplash-consumer-returns-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://help.whiplash.com/hc/en-us/categories/13378954544411-Whiplash-Application-Developers
+  - type: Authentication
+    url: https://help.whiplash.com/hc/en-us/articles/360050870691-Authentication-for-the-V2-API
+  - type: RateLimits
+    url: >-
+      https://help.whiplash.com/hc/en-us/articles/38805892080667-API-Rate-Limits-and-Best-Practices
+  - type: GitHubOrg
+    url: https://github.com/whiplashmerch
+- aid: whiplash:whiplash-customers-api
+  name: Whiplash Customers API
+  description: Customer management — list, count, retrieve, update, and available actions
+  humanURL: >-
+    https://help.whiplash.com/hc/en-us/categories/13378954544411-Whiplash-Application-Developers
+  baseURL: https://api.getwhiplash.com
+  tags:
+  - Customers
+  properties:
+  - type: OpenAPI
+    url: openapi/whiplash-customers-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://help.whiplash.com/hc/en-us/categories/13378954544411-Whiplash-Application-Developers
+  - type: Authentication
+    url: https://help.whiplash.com/hc/en-us/articles/360050870691-Authentication-for-the-V2-API
+  - type: RateLimits
+    url: >-
+      https://help.whiplash.com/hc/en-us/articles/38805892080667-API-Rate-Limits-and-Best-Practices
+  - type: GitHubOrg
+    url: https://github.com/whiplashmerch
+- aid: whiplash:whiplash-documents-api
+  name: Whiplash Documents API
+  description: Document handling — list, create, retrieve, destroy, and actions
+  humanURL: >-
+    https://help.whiplash.com/hc/en-us/categories/13378954544411-Whiplash-Application-Developers
+  baseURL: https://api.getwhiplash.com
+  tags:
+  - Documents
+  properties:
+  - type: OpenAPI
+    url: openapi/whiplash-documents-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://help.whiplash.com/hc/en-us/categories/13378954544411-Whiplash-Application-Developers
+  - type: Authentication
+    url: https://help.whiplash.com/hc/en-us/articles/360050870691-Authentication-for-the-V2-API
+  - type: RateLimits
+    url: >-
+      https://help.whiplash.com/hc/en-us/articles/38805892080667-API-Rate-Limits-and-Best-Practices
+  - type: GitHubOrg
+    url: https://github.com/whiplashmerch
+- aid: whiplash:whiplash-items-api
+  name: Whiplash Items API
+  description: >-
+    Inventory item management — list, create, count, retrieve, update, archive, bundles, actions, locations,
+    meta fields, originators, scancodes, history, and stock by warehouse
+  humanURL: >-
+    https://help.whiplash.com/hc/en-us/categories/13378954544411-Whiplash-Application-Developers
+  baseURL: https://api.getwhiplash.com
+  tags:
+  - Items
+  properties:
+  - type: OpenAPI
+    url: openapi/whiplash-items-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://help.whiplash.com/hc/en-us/categories/13378954544411-Whiplash-Application-Developers
+  - type: Authentication
+    url: https://help.whiplash.com/hc/en-us/articles/360050870691-Authentication-for-the-V2-API
+  - type: RateLimits
+    url: >-
+      https://help.whiplash.com/hc/en-us/articles/38805892080667-API-Rate-Limits-and-Best-Practices
+  - type: GitHubOrg
+    url: https://github.com/whiplashmerch
+- aid: whiplash:whiplash-notification-events-api
+  name: Whiplash Notification Events API
+  description: Event tracking — list and retrieve
+  humanURL: >-
+    https://help.whiplash.com/hc/en-us/categories/13378954544411-Whiplash-Application-Developers
+  baseURL: https://api.getwhiplash.com
+  tags:
+  - Notification Events
+  properties:
+  - type: OpenAPI
+    url: openapi/whiplash-notification-events-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://help.whiplash.com/hc/en-us/categories/13378954544411-Whiplash-Application-Developers
+  - type: Authentication
+    url: https://help.whiplash.com/hc/en-us/articles/360050870691-Authentication-for-the-V2-API
+  - type: RateLimits
+    url: >-
+      https://help.whiplash.com/hc/en-us/articles/38805892080667-API-Rate-Limits-and-Best-Practices
+  - type: GitHubOrg
+    url: https://github.com/whiplashmerch
+- aid: whiplash:whiplash-notification-subscriptions-api
+  name: Whiplash Notification Subscriptions API
+  description: >-
+    Webhook subscription management — list, create, count, retrieve, update, delete, and test
+  humanURL: >-
+    https://help.whiplash.com/hc/en-us/categories/13378954544411-Whiplash-Application-Developers
+  baseURL: https://api.getwhiplash.com
+  tags:
+  - Notification Subscriptions
+  properties:
+  - type: OpenAPI
+    url: openapi/whiplash-notification-subscriptions-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://help.whiplash.com/hc/en-us/categories/13378954544411-Whiplash-Application-Developers
+  - type: Authentication
+    url: https://help.whiplash.com/hc/en-us/articles/360050870691-Authentication-for-the-V2-API
+  - type: RateLimits
+    url: >-
+      https://help.whiplash.com/hc/en-us/articles/38805892080667-API-Rate-Limits-and-Best-Practices
+  - type: GitHubOrg
+    url: https://github.com/whiplashmerch
+- aid: whiplash:whiplash-orders-api
+  name: Whiplash Orders API
+  description: >-
+    Order processing — full CRUD, bulk creation, actions, customs info, history, documents, items, serial
+    numbers, shipping details, and wholesale
+  humanURL: >-
+    https://help.whiplash.com/hc/en-us/categories/13378954544411-Whiplash-Application-Developers
+  baseURL: https://api.getwhiplash.com
+  tags:
+  - Orders
+  properties:
+  - type: OpenAPI
+    url: openapi/whiplash-orders-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://help.whiplash.com/hc/en-us/categories/13378954544411-Whiplash-Application-Developers
+  - type: Authentication
+    url: https://help.whiplash.com/hc/en-us/articles/360050870691-Authentication-for-the-V2-API
+  - type: RateLimits
+    url: >-
+      https://help.whiplash.com/hc/en-us/articles/38805892080667-API-Rate-Limits-and-Best-Practices
+  - type: GitHubOrg
+    url: https://github.com/whiplashmerch
+- aid: whiplash:whiplash-shipnotices-api
+  name: Whiplash Shipnotices API
+  description: >-
+    Incoming inventory shipments — list, create, bulk operations, count, retrieve, update, destroy, items,
+    and meta fields
+  humanURL: >-
+    https://help.whiplash.com/hc/en-us/categories/13378954544411-Whiplash-Application-Developers
+  baseURL: https://api.getwhiplash.com
+  tags:
+  - Shipnotices
+  properties:
+  - type: OpenAPI
+    url: openapi/whiplash-shipnotices-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://help.whiplash.com/hc/en-us/categories/13378954544411-Whiplash-Application-Developers
+  - type: Authentication
+    url: https://help.whiplash.com/hc/en-us/articles/360050870691-Authentication-for-the-V2-API
+  - type: RateLimits
+    url: >-
+      https://help.whiplash.com/hc/en-us/articles/38805892080667-API-Rate-Limits-and-Best-Practices
+  - type: GitHubOrg
+    url: https://github.com/whiplashmerch
+- aid: whiplash:whiplash-simulate-api
+  name: Whiplash Simulate API
+  description: >-
+    Simulation endpoints for testing order, consumer return, and shipnotice processing in sandbox environments
+  humanURL: >-
+    https://help.whiplash.com/hc/en-us/categories/13378954544411-Whiplash-Application-Developers
+  baseURL: https://api.getwhiplash.com
+  tags:
+  - Simulate
+  properties:
+  - type: OpenAPI
+    url: openapi/whiplash-simulate-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://help.whiplash.com/hc/en-us/categories/13378954544411-Whiplash-Application-Developers
+  - type: Authentication
+    url: https://help.whiplash.com/hc/en-us/articles/360050870691-Authentication-for-the-V2-API
+  - type: RateLimits
+    url: >-
+      https://help.whiplash.com/hc/en-us/articles/38805892080667-API-Rate-Limits-and-Best-Practices
+  - type: GitHubOrg
+    url: https://github.com/whiplashmerch
 common:
   - type: AgenticAccess
     url: agentic-access/whiplash-agentic-access.yml
