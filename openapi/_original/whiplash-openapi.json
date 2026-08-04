@@ -1,0 +1,1701 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Whiplash (Rydership) API",
+    "description": "The Whiplash REST API (now RyderShip API under Ryder System) enables developers to manage orders, items, inventory, shipments, consumer returns, customers, notification subscriptions, and documents programmatically. The API uses OAuth 2.0 Bearer token authentication and supports both authorization code and client credentials flows. The V2 API is open by invite only.",
+    "version": "2.0",
+    "contact": {
+      "name": "Rydership Development Team",
+      "email": "tech@whiplash.com",
+      "url": "https://www.getwhiplash.com"
+    },
+    "x-logo": {
+      "url": "https://wl-s3-assets.s3.amazonaws.com/rydership/RyderShip-horizontal-safe-padding.svg"
+    }
+  },
+  "externalDocs": {
+    "description": "Whiplash API Developer Documentation",
+    "url": "https://help.whiplash.com/hc/en-us/categories/13378954544411-Whiplash-Application-Developers"
+  },
+  "servers": [
+    {
+      "url": "https://api.getwhiplash.com",
+      "description": "Whiplash Production API"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Orders",
+      "description": "Order processing — full CRUD, bulk creation, actions, customs info, history, documents, items, serial numbers, shipping details, and wholesale"
+    },
+    {
+      "name": "Items",
+      "description": "Inventory item management — list, create, count, retrieve, update, archive, bundles, actions, locations, meta fields, originators, scancodes, history, and stock by warehouse"
+    },
+    {
+      "name": "Consumer Returns",
+      "description": "Goods returning from end consumers — list, create (single/bulk), count, retrieve, update, destroy, and meta fields"
+    },
+    {
+      "name": "Customers",
+      "description": "Customer management — list, count, retrieve, update, and available actions"
+    },
+    {
+      "name": "Documents",
+      "description": "Document handling — list, create, retrieve, destroy, and actions"
+    },
+    {
+      "name": "Shipnotices",
+      "description": "Incoming inventory shipments — list, create, bulk operations, count, retrieve, update, destroy, items, and meta fields"
+    },
+    {
+      "name": "Notification Subscriptions",
+      "description": "Webhook subscription management — list, create, count, retrieve, update, delete, and test"
+    },
+    {
+      "name": "Notification Events",
+      "description": "Event tracking — list and retrieve"
+    },
+    {
+      "name": "Bundle Items",
+      "description": "Components defining quantity and relationships within product bundles — retrieve, update quantity, and destroy"
+    },
+    {
+      "name": "Simulate",
+      "description": "Simulation endpoints for testing order, consumer return, and shipnotice processing in sandbox environments"
+    }
+  ],
+  "paths": {
+    "/v2/orders": {
+      "get": {
+        "operationId": "listOrders",
+        "summary": "List orders",
+        "description": "Returns a paginated list of orders.",
+        "tags": ["Orders"],
+        "parameters": [
+          { "$ref": "#/components/parameters/PageParam" },
+          { "$ref": "#/components/parameters/LimitParam" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Order" }
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      },
+      "post": {
+        "operationId": "createOrder",
+        "summary": "Create an order",
+        "description": "Creates a new order.",
+        "tags": ["Orders"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/OrderInput" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Order created",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Order" }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "422": { "$ref": "#/components/responses/UnprocessableEntity" }
+        }
+      }
+    },
+    "/v2/orders/bulk": {
+      "post": {
+        "operationId": "bulkCreateOrders",
+        "summary": "Bulk create orders",
+        "description": "Creates multiple orders in a single request.",
+        "tags": ["Orders"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/OrderInput" }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Orders created" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/orders/count": {
+      "get": {
+        "operationId": "countOrders",
+        "summary": "Count orders",
+        "description": "Returns the total count of orders.",
+        "tags": ["Orders"],
+        "responses": {
+          "200": {
+            "description": "Count response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CountResponse" }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/orders/actions": {
+      "get": {
+        "operationId": "listOrderActions",
+        "summary": "List available order actions",
+        "description": "Returns available actions that can be performed on orders.",
+        "tags": ["Orders"],
+        "responses": {
+          "200": { "description": "Available actions" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/orders/{id}": {
+      "get": {
+        "operationId": "getOrder",
+        "summary": "Retrieve an order",
+        "description": "Returns details for a specific order by ID.",
+        "tags": ["Orders"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Order details",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Order" }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      },
+      "put": {
+        "operationId": "updateOrder",
+        "summary": "Update an order",
+        "description": "Updates an existing order.",
+        "tags": ["Orders"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/OrderInput" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Order updated",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Order" }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
+    "/v2/orders/{id}/call/{action}": {
+      "post": {
+        "operationId": "performOrderAction",
+        "summary": "Perform an action on an order",
+        "description": "Performs a named action on a specific order (e.g., cancel, ship).",
+        "tags": ["Orders"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" },
+          {
+            "name": "action",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "The action to perform on the order"
+          }
+        ],
+        "responses": {
+          "200": { "description": "Action performed" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
+    "/v2/orders/{id}/customs_info": {
+      "get": {
+        "operationId": "getOrderCustomsInfo",
+        "summary": "Get order customs information",
+        "description": "Returns customs information for a specific order.",
+        "tags": ["Orders"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": { "description": "Customs information" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
+    "/v2/orders/{id}/events": {
+      "get": {
+        "operationId": "listOrderEvents",
+        "summary": "List order events",
+        "description": "Returns the history/events for a specific order.",
+        "tags": ["Orders"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": { "description": "Order events" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
+    "/v2/orders/{id}/events/count": {
+      "get": {
+        "operationId": "countOrderEvents",
+        "summary": "Count order events",
+        "tags": ["Orders"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": { "description": "Event count", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CountResponse" } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/orders/{id}/order_items": {
+      "get": {
+        "operationId": "listOrderItems",
+        "summary": "List items in an order",
+        "tags": ["Orders"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": { "description": "Order items" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/orders/{id}/order_items/count": {
+      "get": {
+        "operationId": "countOrderItems",
+        "summary": "Count items in an order",
+        "tags": ["Orders"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": { "description": "Item count", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CountResponse" } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/orders/{id}/serial_numbers": {
+      "get": {
+        "operationId": "listOrderSerialNumbers",
+        "summary": "List serial numbers for an order",
+        "tags": ["Orders"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": { "description": "Serial numbers" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/orders/{id}/order_documents": {
+      "get": {
+        "operationId": "listOrderDocuments",
+        "summary": "List documents for an order",
+        "tags": ["Orders"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": { "description": "Order documents" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/orders/{id}/order_documents/count": {
+      "get": {
+        "operationId": "countOrderDocuments",
+        "summary": "Count documents for an order",
+        "tags": ["Orders"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": { "description": "Document count", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CountResponse" } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/orders/{id}/shipping_documents": {
+      "get": {
+        "operationId": "listOrderShippingDocuments",
+        "summary": "List shipping documents for an order",
+        "tags": ["Orders"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": { "description": "Shipping documents" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/orders/{id}/meta_fields": {
+      "get": {
+        "operationId": "listOrderMetaFields",
+        "summary": "List meta fields for an order",
+        "tags": ["Orders"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": { "description": "Meta fields" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/items": {
+      "get": {
+        "operationId": "listItems",
+        "summary": "List items",
+        "description": "Returns a paginated list of inventory items (SKUs).",
+        "tags": ["Items"],
+        "parameters": [
+          { "$ref": "#/components/parameters/PageParam" },
+          { "$ref": "#/components/parameters/LimitParam" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Item" }
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      },
+      "post": {
+        "operationId": "createItem",
+        "summary": "Create an item",
+        "description": "Creates a new inventory item (SKU).",
+        "tags": ["Items"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ItemInput" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Item created",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Item" }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "422": { "$ref": "#/components/responses/UnprocessableEntity" }
+        }
+      }
+    },
+    "/v2/items/count": {
+      "get": {
+        "operationId": "countItems",
+        "summary": "Count items",
+        "tags": ["Items"],
+        "responses": {
+          "200": { "description": "Count response", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CountResponse" } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/items/actions": {
+      "get": {
+        "operationId": "listItemActions",
+        "summary": "List available item actions",
+        "tags": ["Items"],
+        "responses": {
+          "200": { "description": "Available actions" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/items/{id}": {
+      "get": {
+        "operationId": "getItem",
+        "summary": "Retrieve an item",
+        "description": "Returns details for a specific inventory item by ID.",
+        "tags": ["Items"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Item details",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Item" }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      },
+      "put": {
+        "operationId": "updateItem",
+        "summary": "Update an item",
+        "tags": ["Items"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ItemInput" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Item updated", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Item" } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
+    "/v2/items/{id}/call/{action}": {
+      "post": {
+        "operationId": "performItemAction",
+        "summary": "Perform an action on an item",
+        "description": "Performs a named action on a specific item (e.g., archive).",
+        "tags": ["Items"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" },
+          {
+            "name": "action",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "The action to perform on the item"
+          }
+        ],
+        "responses": {
+          "200": { "description": "Action performed" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/items/{id}/meta_fields": {
+      "get": {
+        "operationId": "listItemMetaFields",
+        "summary": "List meta fields for an item",
+        "tags": ["Items"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": { "description": "Meta fields" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/items/{id}/warehouse_quantities": {
+      "get": {
+        "operationId": "getItemWarehouseQuantities",
+        "summary": "Get item stock by warehouse",
+        "description": "Returns inventory quantities for a specific item across warehouse locations.",
+        "tags": ["Items"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": { "description": "Warehouse quantities" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/items/{id}/transactions": {
+      "get": {
+        "operationId": "listItemTransactions",
+        "summary": "List inventory transactions for an item",
+        "tags": ["Items"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": { "description": "Inventory transactions" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/items/{id}/transactions/count": {
+      "get": {
+        "operationId": "countItemTransactions",
+        "summary": "Count inventory transactions for an item",
+        "tags": ["Items"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": { "description": "Transaction count", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CountResponse" } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/items/{id}/transactions/export": {
+      "get": {
+        "operationId": "exportItemTransactions",
+        "summary": "Export inventory transactions for an item",
+        "tags": ["Items"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": { "description": "Exported transactions" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/items/{id}/scancodes": {
+      "get": {
+        "operationId": "listItemScancodes",
+        "summary": "List scancodes for an item",
+        "tags": ["Items"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": { "description": "Scancodes" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/items/{id}/bundle_items": {
+      "get": {
+        "operationId": "listItemBundleComponents",
+        "summary": "List bundle components for an item",
+        "tags": ["Items"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": { "description": "Bundle components" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/items/{id}/originators": {
+      "get": {
+        "operationId": "listItemOriginators",
+        "summary": "List originators for an item",
+        "tags": ["Items"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": { "description": "Originators" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/items/{id}/originators/count": {
+      "get": {
+        "operationId": "countItemOriginators",
+        "summary": "Count originators for an item",
+        "tags": ["Items"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": { "description": "Originator count", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CountResponse" } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/items/{id}/shipnotice_items": {
+      "get": {
+        "operationId": "listItemShipnoticeItems",
+        "summary": "List shipnotice items for an item",
+        "tags": ["Items"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": { "description": "Shipnotice items" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/items/{id}/shipnotice_items/count": {
+      "get": {
+        "operationId": "countItemShipnoticeItems",
+        "summary": "Count shipnotice items for an item",
+        "tags": ["Items"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": { "description": "Shipnotice item count", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CountResponse" } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/consumer_returns": {
+      "get": {
+        "operationId": "listConsumerReturns",
+        "summary": "List consumer returns",
+        "description": "Returns a paginated list of consumer returns.",
+        "tags": ["Consumer Returns"],
+        "parameters": [
+          { "$ref": "#/components/parameters/PageParam" },
+          { "$ref": "#/components/parameters/LimitParam" }
+        ],
+        "responses": {
+          "200": { "description": "Successful response" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      },
+      "post": {
+        "operationId": "createConsumerReturn",
+        "summary": "Create a consumer return",
+        "tags": ["Consumer Returns"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ConsumerReturnInput" }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Consumer return created" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "422": { "$ref": "#/components/responses/UnprocessableEntity" }
+        }
+      }
+    },
+    "/v2/consumer_returns/bulk": {
+      "post": {
+        "operationId": "bulkCreateConsumerReturns",
+        "summary": "Bulk create consumer returns",
+        "tags": ["Consumer Returns"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/ConsumerReturnInput" }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Consumer returns created" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/consumer_returns/count": {
+      "get": {
+        "operationId": "countConsumerReturns",
+        "summary": "Count consumer returns",
+        "tags": ["Consumer Returns"],
+        "responses": {
+          "200": { "description": "Count response", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CountResponse" } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/consumer_returns/{id}": {
+      "get": {
+        "operationId": "getConsumerReturn",
+        "summary": "Retrieve a consumer return",
+        "tags": ["Consumer Returns"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": { "description": "Consumer return details" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      },
+      "put": {
+        "operationId": "updateConsumerReturn",
+        "summary": "Update a consumer return",
+        "tags": ["Consumer Returns"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ConsumerReturnInput" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Consumer return updated" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      },
+      "delete": {
+        "operationId": "deleteConsumerReturn",
+        "summary": "Delete a consumer return",
+        "tags": ["Consumer Returns"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "204": { "description": "Consumer return deleted" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
+    "/v2/consumer_returns/{id}/meta_fields": {
+      "get": {
+        "operationId": "listConsumerReturnMetaFields",
+        "summary": "List meta fields for a consumer return",
+        "tags": ["Consumer Returns"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": { "description": "Meta fields" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/customers": {
+      "get": {
+        "operationId": "listCustomers",
+        "summary": "List customers",
+        "description": "Returns a paginated list of customers.",
+        "tags": ["Customers"],
+        "parameters": [
+          { "$ref": "#/components/parameters/PageParam" },
+          { "$ref": "#/components/parameters/LimitParam" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Customer" }
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/customers/count": {
+      "get": {
+        "operationId": "countCustomers",
+        "summary": "Count customers",
+        "tags": ["Customers"],
+        "responses": {
+          "200": { "description": "Count response", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CountResponse" } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/customers/actions": {
+      "get": {
+        "operationId": "listCustomerActions",
+        "summary": "List available customer actions",
+        "tags": ["Customers"],
+        "responses": {
+          "200": { "description": "Available actions" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/customers/{id}": {
+      "get": {
+        "operationId": "getCustomer",
+        "summary": "Retrieve a customer",
+        "tags": ["Customers"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Customer details",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Customer" }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      },
+      "put": {
+        "operationId": "updateCustomer",
+        "summary": "Update a customer",
+        "tags": ["Customers"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Customer" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Customer updated", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Customer" } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
+    "/v2/documents": {
+      "get": {
+        "operationId": "listDocuments",
+        "summary": "List documents",
+        "tags": ["Documents"],
+        "parameters": [
+          { "$ref": "#/components/parameters/PageParam" },
+          { "$ref": "#/components/parameters/LimitParam" }
+        ],
+        "responses": {
+          "200": { "description": "Documents list" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      },
+      "post": {
+        "operationId": "createDocument",
+        "summary": "Create a document",
+        "tags": ["Documents"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "type": "object" }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Document created" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/documents/actions": {
+      "get": {
+        "operationId": "listDocumentActions",
+        "summary": "List available document actions",
+        "tags": ["Documents"],
+        "responses": {
+          "200": { "description": "Available actions" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/documents/{id}": {
+      "get": {
+        "operationId": "getDocument",
+        "summary": "Retrieve a document",
+        "tags": ["Documents"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": { "description": "Document details" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      },
+      "delete": {
+        "operationId": "deleteDocument",
+        "summary": "Delete a document",
+        "tags": ["Documents"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "204": { "description": "Document deleted" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
+    "/v2/shipnotices": {
+      "get": {
+        "operationId": "listShipnotices",
+        "summary": "List shipnotices",
+        "description": "Returns a paginated list of advance shipment notices (ASNs).",
+        "tags": ["Shipnotices"],
+        "parameters": [
+          { "$ref": "#/components/parameters/PageParam" },
+          { "$ref": "#/components/parameters/LimitParam" }
+        ],
+        "responses": {
+          "200": { "description": "Shipnotices list" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      },
+      "post": {
+        "operationId": "createShipnotice",
+        "summary": "Create a shipnotice",
+        "tags": ["Shipnotices"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "type": "object" }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Shipnotice created" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "422": { "$ref": "#/components/responses/UnprocessableEntity" }
+        }
+      }
+    },
+    "/v2/shipnotices/bulk": {
+      "post": {
+        "operationId": "bulkCreateShipnotices",
+        "summary": "Bulk create shipnotices",
+        "tags": ["Shipnotices"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "type": "array", "items": { "type": "object" } }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Shipnotices created" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/shipnotices/count": {
+      "get": {
+        "operationId": "countShipnotices",
+        "summary": "Count shipnotices",
+        "tags": ["Shipnotices"],
+        "responses": {
+          "200": { "description": "Count response", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CountResponse" } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/shipnotices/actions": {
+      "get": {
+        "operationId": "listShipnoticeActions",
+        "summary": "List available shipnotice actions",
+        "tags": ["Shipnotices"],
+        "responses": {
+          "200": { "description": "Available actions" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/shipnotices/{id}": {
+      "get": {
+        "operationId": "getShipnotice",
+        "summary": "Retrieve a shipnotice",
+        "tags": ["Shipnotices"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": { "description": "Shipnotice details" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      },
+      "put": {
+        "operationId": "updateShipnotice",
+        "summary": "Update a shipnotice",
+        "tags": ["Shipnotices"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "type": "object" } } }
+        },
+        "responses": {
+          "200": { "description": "Shipnotice updated" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      },
+      "delete": {
+        "operationId": "deleteShipnotice",
+        "summary": "Delete a shipnotice",
+        "tags": ["Shipnotices"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "204": { "description": "Shipnotice deleted" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
+    "/v2/shipnotices/{id}/shipnotice_items": {
+      "get": {
+        "operationId": "listShipnoticeItems",
+        "summary": "List items in a shipnotice",
+        "tags": ["Shipnotices"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": { "description": "Shipnotice items" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/shipnotices/{id}/shipnotice_items/count": {
+      "get": {
+        "operationId": "countShipnoticeItems",
+        "summary": "Count items in a shipnotice",
+        "tags": ["Shipnotices"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": { "description": "Shipnotice item count", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CountResponse" } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/shipnotices/{id}/meta_fields": {
+      "get": {
+        "operationId": "listShipnoticeMetaFields",
+        "summary": "List meta fields for a shipnotice",
+        "tags": ["Shipnotices"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": { "description": "Meta fields" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/notification_subscriptions": {
+      "get": {
+        "operationId": "listNotificationSubscriptions",
+        "summary": "List notification subscriptions",
+        "description": "Returns a paginated list of webhook notification subscriptions.",
+        "tags": ["Notification Subscriptions"],
+        "parameters": [
+          { "$ref": "#/components/parameters/PageParam" },
+          { "$ref": "#/components/parameters/LimitParam" }
+        ],
+        "responses": {
+          "200": { "description": "Notification subscriptions list" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      },
+      "post": {
+        "operationId": "createNotificationSubscription",
+        "summary": "Create a notification subscription",
+        "tags": ["Notification Subscriptions"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/NotificationSubscriptionInput" }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Notification subscription created" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "422": { "$ref": "#/components/responses/UnprocessableEntity" }
+        }
+      }
+    },
+    "/v2/notification_subscriptions/count": {
+      "get": {
+        "operationId": "countNotificationSubscriptions",
+        "summary": "Count notification subscriptions",
+        "tags": ["Notification Subscriptions"],
+        "responses": {
+          "200": { "description": "Count response", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CountResponse" } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/notification_subscriptions/{id}": {
+      "get": {
+        "operationId": "getNotificationSubscription",
+        "summary": "Retrieve a notification subscription",
+        "tags": ["Notification Subscriptions"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": { "description": "Notification subscription details" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      },
+      "put": {
+        "operationId": "updateNotificationSubscription",
+        "summary": "Update a notification subscription",
+        "tags": ["Notification Subscriptions"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/NotificationSubscriptionInput" } } }
+        },
+        "responses": {
+          "200": { "description": "Notification subscription updated" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      },
+      "delete": {
+        "operationId": "deleteNotificationSubscription",
+        "summary": "Delete a notification subscription",
+        "tags": ["Notification Subscriptions"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "204": { "description": "Notification subscription deleted" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
+    "/v2/notification_subscriptions/{id}/test": {
+      "post": {
+        "operationId": "testNotificationSubscription",
+        "summary": "Test a notification subscription",
+        "description": "Sends a test event to the webhook endpoint for a specific subscription.",
+        "tags": ["Notification Subscriptions"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": { "description": "Test event sent" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
+    "/v2/notification_events": {
+      "get": {
+        "operationId": "listNotificationEvents",
+        "summary": "List notification events",
+        "tags": ["Notification Events"],
+        "parameters": [
+          { "$ref": "#/components/parameters/PageParam" },
+          { "$ref": "#/components/parameters/LimitParam" }
+        ],
+        "responses": {
+          "200": { "description": "Notification events list" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/notification_events/{id}": {
+      "get": {
+        "operationId": "getNotificationEvent",
+        "summary": "Retrieve a notification event",
+        "tags": ["Notification Events"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": { "description": "Notification event details" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
+    "/v2/bundle_items/{id}": {
+      "get": {
+        "operationId": "getBundleItem",
+        "summary": "Retrieve a bundle item",
+        "description": "Returns details for a specific bundle component.",
+        "tags": ["Bundle Items"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": { "description": "Bundle item details" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      },
+      "put": {
+        "operationId": "updateBundleItemQuantity",
+        "summary": "Update bundle item quantity",
+        "tags": ["Bundle Items"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "type": "object", "properties": { "quantity": { "type": "integer" } } } } }
+        },
+        "responses": {
+          "200": { "description": "Bundle item updated" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      },
+      "delete": {
+        "operationId": "deleteBundleItem",
+        "summary": "Delete a bundle item",
+        "tags": ["Bundle Items"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "204": { "description": "Bundle item deleted" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
+    "/v2/simulate/orders/create": {
+      "post": {
+        "operationId": "simulateCreateOrder",
+        "summary": "Simulate order creation",
+        "description": "Creates a simulated order for testing purposes.",
+        "tags": ["Simulate"],
+        "responses": {
+          "201": { "description": "Simulated order created" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/simulate/orders/{order_id}/process": {
+      "post": {
+        "operationId": "simulateProcessOrder",
+        "summary": "Simulate order processing",
+        "description": "Simulates processing of an order through the fulfillment pipeline.",
+        "tags": ["Simulate"],
+        "parameters": [
+          {
+            "name": "order_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Order processed in simulation" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/simulate/consumer_returns/create": {
+      "post": {
+        "operationId": "simulateCreateConsumerReturn",
+        "summary": "Simulate consumer return creation",
+        "description": "Creates a simulated consumer return for testing purposes.",
+        "tags": ["Simulate"],
+        "responses": {
+          "201": { "description": "Simulated consumer return created" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/simulate/consumer_returns/{consumer_return_id}/process": {
+      "post": {
+        "operationId": "simulateProcessConsumerReturn",
+        "summary": "Simulate consumer return processing",
+        "tags": ["Simulate"],
+        "parameters": [
+          {
+            "name": "consumer_return_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Consumer return processed in simulation" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/simulate/shipnotices/create": {
+      "post": {
+        "operationId": "simulateCreateShipnotice",
+        "summary": "Simulate shipnotice creation",
+        "description": "Creates a simulated advance shipment notice for testing purposes.",
+        "tags": ["Simulate"],
+        "responses": {
+          "201": { "description": "Simulated shipnotice created" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/simulate/shipnotices/{shipnotice_id}/process": {
+      "post": {
+        "operationId": "simulateProcessShipnotice",
+        "summary": "Simulate shipnotice processing",
+        "tags": ["Simulate"],
+        "parameters": [
+          {
+            "name": "shipnotice_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Shipnotice processed in simulation" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/load_scacs": {
+      "get": {
+        "operationId": "listLoadScacs",
+        "summary": "List load SCACs",
+        "description": "Returns Standard Carrier Alpha Codes (SCACs) available for load configuration.",
+        "tags": ["Items"],
+        "responses": {
+          "200": { "description": "Load SCACs list" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/load_scacs/count": {
+      "get": {
+        "operationId": "countLoadScacs",
+        "summary": "Count load SCACs",
+        "tags": ["Items"],
+        "responses": {
+          "200": { "description": "Count response", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CountResponse" } } } },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/v2/templates/{id}": {
+      "get": {
+        "operationId": "getTemplate",
+        "summary": "Retrieve a template",
+        "tags": ["Documents"],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": { "description": "Template details" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "OAuth2",
+        "description": "OAuth 2.0 Bearer token. Obtain via authorization code or client credentials flow. See https://help.whiplash.com/hc/en-us/articles/360050870691-Authentication-for-the-V2-API"
+      }
+    },
+    "parameters": {
+      "IdParam": {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "schema": { "type": "string" },
+        "description": "Unique identifier of the resource"
+      },
+      "PageParam": {
+        "name": "page",
+        "in": "query",
+        "required": false,
+        "schema": { "type": "integer", "minimum": 1, "default": 1 },
+        "description": "Page number for pagination"
+      },
+      "LimitParam": {
+        "name": "limit",
+        "in": "query",
+        "required": false,
+        "schema": { "type": "integer", "minimum": 1, "maximum": 500 },
+        "description": "Number of results per page"
+      }
+    },
+    "responses": {
+      "Unauthorized": {
+        "description": "Unauthorized — invalid or missing Bearer token"
+      },
+      "NotFound": {
+        "description": "Resource not found"
+      },
+      "UnprocessableEntity": {
+        "description": "Validation error — the request body contains invalid data",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "CountResponse": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "type": "integer",
+            "description": "Total number of matching resources"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      },
+      "Address": {
+        "type": "object",
+        "properties": {
+          "address1": { "type": "string", "description": "Primary street address" },
+          "address2": { "type": "string", "description": "Secondary address (apartment, suite, unit)" },
+          "city": { "type": "string", "description": "City or town" },
+          "company": { "type": "string", "description": "Company name" },
+          "country": { "type": "string", "description": "ISO 3166-1 alpha-2 country code (e.g., US, CA, GB)" },
+          "email": { "type": "string", "format": "email" },
+          "firstName": { "type": "string" },
+          "lastName": { "type": "string" },
+          "phone": { "type": "string", "description": "Phone including country code (e.g., +1-555-123-4567)" },
+          "stateOrProvince": { "type": "string", "description": "State/province; use 2-letter code for US (e.g., CA, NY)" },
+          "zipCodeOrPostalCode": { "type": "string" }
+        }
+      },
+      "CustomField": {
+        "type": "object",
+        "required": ["name", "value"],
+        "properties": {
+          "name": { "type": "string" },
+          "value": { "type": "string" }
+        }
+      },
+      "Order": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "readOnly": true, "description": "System-generated unique identifier" },
+          "externalId": { "type": "string", "description": "ID in the client's system; must be unique within the tenant" },
+          "createdAt": { "type": "string", "format": "date-time", "readOnly": true },
+          "updatedAt": { "type": "string", "format": "date-time", "readOnly": true },
+          "tenantId": { "type": "string", "readOnly": true },
+          "name": { "type": "string", "description": "Order name" },
+          "status": { "type": "string", "description": "Order status" },
+          "currency": { "type": "string", "description": "Order currency code" },
+          "billingAddress": { "$ref": "#/components/schemas/Address" },
+          "shippingAddress": { "$ref": "#/components/schemas/Address" },
+          "customFields": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/CustomField" }
+          },
+          "tags": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      },
+      "OrderInput": {
+        "type": "object",
+        "properties": {
+          "externalId": { "type": "string" },
+          "name": { "type": "string" },
+          "currency": { "type": "string" },
+          "billingAddress": { "$ref": "#/components/schemas/Address" },
+          "shippingAddress": { "$ref": "#/components/schemas/Address" },
+          "customFields": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/CustomField" }
+          },
+          "tags": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      },
+      "Customer": {
+        "type": "object",
+        "required": ["id", "createdAt", "updatedAt", "tenantId"],
+        "properties": {
+          "id": { "type": "string", "readOnly": true },
+          "externalId": { "type": "string" },
+          "createdAt": { "type": "string", "format": "date-time", "readOnly": true },
+          "updatedAt": { "type": "string", "format": "date-time", "readOnly": true },
+          "tenantId": { "type": "string", "readOnly": true },
+          "firstName": { "type": "string" },
+          "lastName": { "type": "string" },
+          "email": { "type": "string", "format": "email" },
+          "phone": { "type": "string" },
+          "status": { "type": "string", "description": "Customer status (e.g., active, inactive, suspended)" },
+          "type": { "type": "string", "description": "Customer type (e.g., individual, company)" },
+          "notes": { "type": "string" },
+          "addresses": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": { "type": "string" },
+                "address": { "$ref": "#/components/schemas/Address" }
+              }
+            }
+          },
+          "customFields": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/CustomField" }
+          },
+          "tags": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      },
+      "Item": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "readOnly": true },
+          "externalId": { "type": "string" },
+          "createdAt": { "type": "string", "format": "date-time", "readOnly": true },
+          "updatedAt": { "type": "string", "format": "date-time", "readOnly": true },
+          "tenantId": { "type": "string", "readOnly": true },
+          "sku": { "type": "string", "description": "Stock Keeping Unit identifier" },
+          "name": { "type": "string", "description": "Item name or description" },
+          "status": { "type": "string", "description": "Item status (e.g., active, archived)" },
+          "weight": { "type": "number", "description": "Item weight" },
+          "weightUnit": { "type": "string", "description": "Weight unit (e.g., oz, lb, g, kg)" },
+          "customFields": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/CustomField" }
+          },
+          "tags": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      },
+      "ItemInput": {
+        "type": "object",
+        "properties": {
+          "externalId": { "type": "string" },
+          "sku": { "type": "string" },
+          "name": { "type": "string" },
+          "weight": { "type": "number" },
+          "weightUnit": { "type": "string" },
+          "customFields": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/CustomField" }
+          },
+          "tags": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      },
+      "ConsumerReturnInput": {
+        "type": "object",
+        "properties": {
+          "externalId": { "type": "string" },
+          "orderId": { "type": "string", "description": "ID of the originating order" },
+          "customFields": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/CustomField" }
+          },
+          "tags": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      },
+      "NotificationSubscriptionInput": {
+        "type": "object",
+        "properties": {
+          "url": { "type": "string", "format": "uri", "description": "Webhook endpoint URL" },
+          "events": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "List of event types to subscribe to"
+          },
+          "active": { "type": "boolean", "description": "Whether the subscription is active" }
+        }
+      }
+    }
+  }
+}
