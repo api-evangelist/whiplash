@@ -1,0 +1,384 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Whiplash (Rydership) Bundle Items API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Items",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List items",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.getwhiplash.com/v2/items",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number for pagination"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page"
+              }
+            ]
+          },
+          "docs": "Returns a paginated list of inventory items (SKUs)."
+        },
+        {
+          "info": {
+            "name": "Create an item",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.getwhiplash.com/v2/items",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new inventory item (SKU)."
+        },
+        {
+          "info": {
+            "name": "Count items",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.getwhiplash.com/v2/items/count"
+          },
+          "docs": "Count items"
+        },
+        {
+          "info": {
+            "name": "List available item actions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.getwhiplash.com/v2/items/actions"
+          },
+          "docs": "List available item actions"
+        },
+        {
+          "info": {
+            "name": "Retrieve an item",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.getwhiplash.com/v2/items/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the resource"
+              }
+            ]
+          },
+          "docs": "Returns details for a specific inventory item by ID."
+        },
+        {
+          "info": {
+            "name": "Update an item",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.getwhiplash.com/v2/items/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the resource"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an item"
+        },
+        {
+          "info": {
+            "name": "Perform an action on an item",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.getwhiplash.com/v2/items/:id/call/:action",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the resource"
+              },
+              {
+                "name": "action",
+                "value": "",
+                "type": "path",
+                "description": "The action to perform on the item"
+              }
+            ]
+          },
+          "docs": "Performs a named action on a specific item (e.g., archive)."
+        },
+        {
+          "info": {
+            "name": "List meta fields for an item",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.getwhiplash.com/v2/items/:id/meta_fields",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the resource"
+              }
+            ]
+          },
+          "docs": "List meta fields for an item"
+        },
+        {
+          "info": {
+            "name": "Get item stock by warehouse",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.getwhiplash.com/v2/items/:id/warehouse_quantities",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the resource"
+              }
+            ]
+          },
+          "docs": "Returns inventory quantities for a specific item across warehouse locations."
+        },
+        {
+          "info": {
+            "name": "List inventory transactions for an item",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.getwhiplash.com/v2/items/:id/transactions",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the resource"
+              }
+            ]
+          },
+          "docs": "List inventory transactions for an item"
+        },
+        {
+          "info": {
+            "name": "Count inventory transactions for an item",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.getwhiplash.com/v2/items/:id/transactions/count",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the resource"
+              }
+            ]
+          },
+          "docs": "Count inventory transactions for an item"
+        },
+        {
+          "info": {
+            "name": "Export inventory transactions for an item",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.getwhiplash.com/v2/items/:id/transactions/export",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the resource"
+              }
+            ]
+          },
+          "docs": "Export inventory transactions for an item"
+        },
+        {
+          "info": {
+            "name": "List scancodes for an item",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.getwhiplash.com/v2/items/:id/scancodes",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the resource"
+              }
+            ]
+          },
+          "docs": "List scancodes for an item"
+        },
+        {
+          "info": {
+            "name": "List bundle components for an item",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.getwhiplash.com/v2/items/:id/bundle_items",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the resource"
+              }
+            ]
+          },
+          "docs": "List bundle components for an item"
+        },
+        {
+          "info": {
+            "name": "List originators for an item",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.getwhiplash.com/v2/items/:id/originators",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the resource"
+              }
+            ]
+          },
+          "docs": "List originators for an item"
+        },
+        {
+          "info": {
+            "name": "Count originators for an item",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.getwhiplash.com/v2/items/:id/originators/count",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the resource"
+              }
+            ]
+          },
+          "docs": "Count originators for an item"
+        },
+        {
+          "info": {
+            "name": "List shipnotice items for an item",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.getwhiplash.com/v2/items/:id/shipnotice_items",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the resource"
+              }
+            ]
+          },
+          "docs": "List shipnotice items for an item"
+        },
+        {
+          "info": {
+            "name": "Count shipnotice items for an item",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.getwhiplash.com/v2/items/:id/shipnotice_items/count",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the resource"
+              }
+            ]
+          },
+          "docs": "Count shipnotice items for an item"
+        },
+        {
+          "info": {
+            "name": "List load SCACs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.getwhiplash.com/v2/load_scacs"
+          },
+          "docs": "Returns Standard Carrier Alpha Codes (SCACs) available for load configuration."
+        },
+        {
+          "info": {
+            "name": "Count load SCACs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.getwhiplash.com/v2/load_scacs/count"
+          },
+          "docs": "Count load SCACs"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,85 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Whiplash (Rydership) Bundle Items API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Bundle Items",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve a bundle item",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.getwhiplash.com/v2/bundle_items/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the resource"
+              }
+            ]
+          },
+          "docs": "Returns details for a specific bundle component."
+        },
+        {
+          "info": {
+            "name": "Update bundle item quantity",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.getwhiplash.com/v2/bundle_items/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the resource"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update bundle item quantity"
+        },
+        {
+          "info": {
+            "name": "Delete a bundle item",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.getwhiplash.com/v2/bundle_items/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the resource"
+              }
+            ]
+          },
+          "docs": "Delete a bundle item"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

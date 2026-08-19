@@ -1,0 +1,170 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Whiplash (Rydership) Bundle Items Consumer Returns API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Consumer Returns",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List consumer returns",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.getwhiplash.com/v2/consumer_returns",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number for pagination"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page"
+              }
+            ]
+          },
+          "docs": "Returns a paginated list of consumer returns."
+        },
+        {
+          "info": {
+            "name": "Create a consumer return",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.getwhiplash.com/v2/consumer_returns",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a consumer return"
+        },
+        {
+          "info": {
+            "name": "Bulk create consumer returns",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.getwhiplash.com/v2/consumer_returns/bulk",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Bulk create consumer returns"
+        },
+        {
+          "info": {
+            "name": "Count consumer returns",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.getwhiplash.com/v2/consumer_returns/count"
+          },
+          "docs": "Count consumer returns"
+        },
+        {
+          "info": {
+            "name": "Retrieve a consumer return",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.getwhiplash.com/v2/consumer_returns/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the resource"
+              }
+            ]
+          },
+          "docs": "Retrieve a consumer return"
+        },
+        {
+          "info": {
+            "name": "Update a consumer return",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.getwhiplash.com/v2/consumer_returns/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the resource"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a consumer return"
+        },
+        {
+          "info": {
+            "name": "Delete a consumer return",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.getwhiplash.com/v2/consumer_returns/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the resource"
+              }
+            ]
+          },
+          "docs": "Delete a consumer return"
+        },
+        {
+          "info": {
+            "name": "List meta fields for a consumer return",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.getwhiplash.com/v2/consumer_returns/:id/meta_fields",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the resource"
+              }
+            ]
+          },
+          "docs": "List meta fields for a consumer return"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

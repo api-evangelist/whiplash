@@ -1,0 +1,111 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Whiplash (Rydership) Bundle Items Simulate API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Simulate",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Simulate order creation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.getwhiplash.com/v2/simulate/orders/create"
+          },
+          "docs": "Creates a simulated order for testing purposes."
+        },
+        {
+          "info": {
+            "name": "Simulate order processing",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.getwhiplash.com/v2/simulate/orders/:order_id/process",
+            "params": [
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Simulates processing of an order through the fulfillment pipeline."
+        },
+        {
+          "info": {
+            "name": "Simulate consumer return creation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.getwhiplash.com/v2/simulate/consumer_returns/create"
+          },
+          "docs": "Creates a simulated consumer return for testing purposes."
+        },
+        {
+          "info": {
+            "name": "Simulate consumer return processing",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.getwhiplash.com/v2/simulate/consumer_returns/:consumer_return_id/process",
+            "params": [
+              {
+                "name": "consumer_return_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Simulate consumer return processing"
+        },
+        {
+          "info": {
+            "name": "Simulate shipnotice creation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.getwhiplash.com/v2/simulate/shipnotices/create"
+          },
+          "docs": "Creates a simulated advance shipment notice for testing purposes."
+        },
+        {
+          "info": {
+            "name": "Simulate shipnotice processing",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.getwhiplash.com/v2/simulate/shipnotices/:shipnotice_id/process",
+            "params": [
+              {
+                "name": "shipnotice_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Simulate shipnotice processing"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
