@@ -29,6 +29,16 @@ tags:
   - Fulfillment
   - 3PL
   - Logistics
+  - E-Commerce
+  - Order
+  - Inventory
+  - Shipments
+  - Returns
+  - Warehousing
+tags_raw:
+  - Fulfillment
+  - 3PL
+  - Logistics
   - Ecommerce
   - Orders
   - Inventory
@@ -133,6 +143,8 @@ apis:
     https://help.whiplash.com/hc/en-us/categories/13378954544411-Whiplash-Application-Developers
   baseURL: https://api.getwhiplash.com
   tags:
+  - Item
+  tags_raw:
   - Items
   properties:
   - type: OpenAPI
@@ -199,6 +211,8 @@ apis:
     https://help.whiplash.com/hc/en-us/categories/13378954544411-Whiplash-Application-Developers
   baseURL: https://api.getwhiplash.com
   tags:
+  - Order
+  tags_raw:
   - Orders
   properties:
   - type: OpenAPI
@@ -222,6 +236,8 @@ apis:
     https://help.whiplash.com/hc/en-us/categories/13378954544411-Whiplash-Application-Developers
   baseURL: https://api.getwhiplash.com
   tags:
+  - Ship Notices
+  tags_raw:
   - Shipnotices
   properties:
   - type: OpenAPI
@@ -244,6 +260,8 @@ apis:
     https://help.whiplash.com/hc/en-us/categories/13378954544411-Whiplash-Application-Developers
   baseURL: https://api.getwhiplash.com
   tags:
+  - simulate
+  tags_raw:
   - Simulate
   properties:
   - type: OpenAPI
