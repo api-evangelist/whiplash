@@ -289,6 +289,9 @@ apis:
   - type: GitHubOrg
     url: https://github.com/whiplashmerch
 common:
+  - type: CapabilityMap
+    url: capabilities/whiplash-capability-edges.yml
+    name: Whiplash Business Capability Map
   - type: AgenticAccess
     url: agentic-access/whiplash-agentic-access.yml
   - type: DomainSecurity
