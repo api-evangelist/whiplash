@@ -7,6 +7,18 @@ description: >-
   under Ryder System, the platform offers pre-built integrations with leading
   ecommerce platforms including Shopify, and supports omnichannel fulfillment
   for DTC, retail, and wholesale brands.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: enterprise
   onboarding: self-serve
