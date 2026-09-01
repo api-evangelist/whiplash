@@ -248,7 +248,7 @@ apis:
     https://help.whiplash.com/hc/en-us/categories/13378954544411-Whiplash-Application-Developers
   baseURL: https://api.getwhiplash.com
   tags:
-  - Shipnotices
+  - Ship Notices
   tags_raw:
   - Shipnotices
   properties:
@@ -272,7 +272,7 @@ apis:
     https://help.whiplash.com/hc/en-us/categories/13378954544411-Whiplash-Application-Developers
   baseURL: https://api.getwhiplash.com
   tags:
-  - Simulate
+  - simulate
   tags_raw:
   - Simulate
   properties:
