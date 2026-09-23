@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Whiplash (Rydership) Bundle Items Customers API
+  title: Whiplash (Rydership) Customers API
   description: The Whiplash REST API (now RyderShip API under Ryder System) enables developers to manage orders, items, inventory, shipments, consumer returns, customers, notification subscriptions, and documents programmatically. The API uses OAuth 2.0 Bearer token authentication and supports both authorization code and client credentials flows. The V2 API is open by invite only.
   version: '2.0'
   contact:
@@ -110,22 +110,6 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   parameters:
-    IdParam:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: string
-      description: Unique identifier of the resource
-    LimitParam:
-      name: limit
-      in: query
-      required: false
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 500
-      description: Number of results per page
     PageParam:
       name: page
       in: query
@@ -135,22 +119,23 @@ components:
         minimum: 1
         default: 1
       description: Page number for pagination
-  responses:
-    NotFound:
-      description: Resource not found
-    Unauthorized:
-      description: Unauthorized — invalid or missing Bearer token
+    LimitParam:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 500
+      description: Number of results per page
+    IdParam:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Unique identifier of the resource
   schemas:
-    CustomField:
-      type: object
-      required:
-      - name
-      - value
-      properties:
-        name:
-          type: string
-        value:
-          type: string
     CountResponse:
       type: object
       properties:
@@ -248,6 +233,21 @@ components:
           type: array
           items:
             type: string
+    CustomField:
+      type: object
+      required:
+      - name
+      - value
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+  responses:
+    Unauthorized:
+      description: Unauthorized — invalid or missing Bearer token
+    NotFound:
+      description: Resource not found
   securitySchemes:
     bearerAuth:
       type: http

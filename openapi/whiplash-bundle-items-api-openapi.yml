@@ -1,4 +1,4 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   title: Whiplash (Rydership) Bundle Items API
   description: The Whiplash REST API (now RyderShip API under Ryder System) enables developers to manage orders, items, inventory, shipments, consumer returns, customers, notification subscriptions, and documents programmatically. The API uses OAuth 2.0 Bearer token authentication and supports both authorization code and client credentials flows. The V2 API is open by invite only.
@@ -72,6 +72,11 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  responses:
+    NotFound:
+      description: Resource not found
+    Unauthorized:
+      description: Unauthorized — invalid or missing Bearer token
   parameters:
     IdParam:
       name: id
@@ -80,11 +85,6 @@ components:
       schema:
         type: string
       description: Unique identifier of the resource
-  responses:
-    Unauthorized:
-      description: Unauthorized — invalid or missing Bearer token
-    NotFound:
-      description: Resource not found
   securitySchemes:
     bearerAuth:
       type: http

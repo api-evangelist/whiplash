@@ -1,16 +1,7 @@
 {
   "provider": "whiplash",
   "sources": [
-    "whiplash-bundle-items-api-openapi.yml",
-    "whiplash-consumer-returns-api-openapi.yml",
-    "whiplash-customers-api-openapi.yml",
-    "whiplash-documents-api-openapi.yml",
-    "whiplash-items-api-openapi.yml",
-    "whiplash-notification-events-api-openapi.yml",
-    "whiplash-notification-subscriptions-api-openapi.yml",
-    "whiplash-orders-api-openapi.yml",
-    "whiplash-shipnotices-api-openapi.yml",
-    "whiplash-simulate-api-openapi.yml"
+    "_original/whiplash-openapi.json"
   ],
   "outputs": [
     "whiplash-bundle-items-api-openapi.yml",
@@ -27,6 +18,21 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "whiplash-openapi.json: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "whiplash-bundle-items-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "whiplash-consumer-returns-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "whiplash-customers-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "whiplash-documents-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "whiplash-items-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "whiplash-notification-events-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "whiplash-notification-subscriptions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "whiplash-orders-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "whiplash-shipnotices-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "whiplash-simulate-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
