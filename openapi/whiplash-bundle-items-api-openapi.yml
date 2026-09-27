@@ -73,10 +73,10 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   responses:
-    NotFound:
-      description: Resource not found
     Unauthorized:
       description: Unauthorized — invalid or missing Bearer token
+    NotFound:
+      description: Resource not found
   parameters:
     IdParam:
       name: id

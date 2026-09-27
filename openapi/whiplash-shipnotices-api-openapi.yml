@@ -189,6 +189,31 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
+  responses:
+    UnprocessableEntity:
+      description: Validation error — the request body contains invalid data
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Unauthorized — invalid or missing Bearer token
+    NotFound:
+      description: Resource not found
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: string
+    CountResponse:
+      type: object
+      properties:
+        count:
+          type: integer
+          description: Total number of matching resources
   parameters:
     PageParam:
       name: page
@@ -199,6 +224,13 @@ components:
         minimum: 1
         default: 1
       description: Page number for pagination
+    IdParam:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Unique identifier of the resource
     LimitParam:
       name: limit
       in: query
@@ -208,38 +240,6 @@ components:
         minimum: 1
         maximum: 500
       description: Number of results per page
-    IdParam:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: string
-      description: Unique identifier of the resource
-  schemas:
-    CountResponse:
-      type: object
-      properties:
-        count:
-          type: integer
-          description: Total number of matching resources
-    ErrorResponse:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            type: string
-  responses:
-    Unauthorized:
-      description: Unauthorized — invalid or missing Bearer token
-    UnprocessableEntity:
-      description: Validation error — the request body contains invalid data
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    NotFound:
-      description: Resource not found
   securitySchemes:
     bearerAuth:
       type: http
