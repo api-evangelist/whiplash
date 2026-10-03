@@ -336,31 +336,7 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  responses:
-    UnprocessableEntity:
-      description: Validation error — the request body contains invalid data
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: Unauthorized — invalid or missing Bearer token
-    NotFound:
-      description: Resource not found
   schemas:
-    ErrorResponse:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            type: string
-    CountResponse:
-      type: object
-      properties:
-        count:
-          type: integer
-          description: Total number of matching resources
     Item:
       type: object
       properties:
@@ -400,6 +376,19 @@ components:
           items:
             $ref: '#/components/schemas/CustomField'
         tags:
+          type: array
+          items:
+            type: string
+    CountResponse:
+      type: object
+      properties:
+        count:
+          type: integer
+          description: Total number of matching resources
+    ErrorResponse:
+      type: object
+      properties:
+        errors:
           type: array
           items:
             type: string
@@ -460,6 +449,17 @@ components:
         minimum: 1
         maximum: 500
       description: Number of results per page
+  responses:
+    UnprocessableEntity:
+      description: Validation error — the request body contains invalid data
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Unauthorized — invalid or missing Bearer token
+    NotFound:
+      description: Resource not found
   securitySchemes:
     bearerAuth:
       type: http

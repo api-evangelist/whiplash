@@ -148,41 +148,13 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  responses:
-    UnprocessableEntity:
-      description: Validation error — the request body contains invalid data
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: Unauthorized — invalid or missing Bearer token
-    NotFound:
-      description: Resource not found
   schemas:
-    ErrorResponse:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            type: string
     CountResponse:
       type: object
       properties:
         count:
           type: integer
           description: Total number of matching resources
-    CustomField:
-      type: object
-      required:
-      - name
-      - value
-      properties:
-        name:
-          type: string
-        value:
-          type: string
     ConsumerReturnInput:
       type: object
       properties:
@@ -199,6 +171,23 @@ components:
           type: array
           items:
             type: string
+    ErrorResponse:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: string
+    CustomField:
+      type: object
+      required:
+      - name
+      - value
+      properties:
+        name:
+          type: string
+        value:
+          type: string
   parameters:
     IdParam:
       name: id
@@ -225,6 +214,17 @@ components:
         minimum: 1
         maximum: 500
       description: Number of results per page
+  responses:
+    UnprocessableEntity:
+      description: Validation error — the request body contains invalid data
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Unauthorized — invalid or missing Bearer token
+    NotFound:
+      description: Resource not found
   securitySchemes:
     bearerAuth:
       type: http

@@ -104,12 +104,14 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  responses:
-    Unauthorized:
-      description: Unauthorized — invalid or missing Bearer token
-    NotFound:
-      description: Resource not found
   parameters:
+    IdParam:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Unique identifier of the resource
     PageParam:
       name: page
       in: query
@@ -119,13 +121,6 @@ components:
         minimum: 1
         default: 1
       description: Page number for pagination
-    IdParam:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: string
-      description: Unique identifier of the resource
     LimitParam:
       name: limit
       in: query
@@ -135,6 +130,11 @@ components:
         minimum: 1
         maximum: 500
       description: Number of results per page
+  responses:
+    Unauthorized:
+      description: Unauthorized — invalid or missing Bearer token
+    NotFound:
+      description: Resource not found
   securitySchemes:
     bearerAuth:
       type: http
