@@ -116,16 +116,6 @@ components:
         count:
           type: integer
           description: Total number of matching resources
-    CustomField:
-      type: object
-      required:
-      - name
-      - value
-      properties:
-        name:
-          type: string
-        value:
-          type: string
     Address:
       type: object
       properties:
@@ -158,6 +148,16 @@ components:
           type: string
           description: State/province; use 2-letter code for US (e.g., CA, NY)
         zipCodeOrPostalCode:
+          type: string
+    CustomField:
+      type: object
+      required:
+      - name
+      - value
+      properties:
+        name:
+          type: string
+        value:
           type: string
     Customer:
       type: object
@@ -217,7 +217,21 @@ components:
           type: array
           items:
             type: string
+  responses:
+    Unauthorized:
+      description: Unauthorized — invalid or missing Bearer token
+    NotFound:
+      description: Resource not found
   parameters:
+    LimitParam:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 500
+      description: Number of results per page
     IdParam:
       name: id
       in: path
@@ -234,20 +248,6 @@ components:
         minimum: 1
         default: 1
       description: Page number for pagination
-    LimitParam:
-      name: limit
-      in: query
-      required: false
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 500
-      description: Number of results per page
-  responses:
-    Unauthorized:
-      description: Unauthorized — invalid or missing Bearer token
-    NotFound:
-      description: Resource not found
   securitySchemes:
     bearerAuth:
       type: http
