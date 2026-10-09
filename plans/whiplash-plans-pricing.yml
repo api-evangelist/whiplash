@@ -1,3 +1,8 @@
+# Provenance stamped 2026-10-07 (roadmap#943): written by an API Evangelist sweep (dated 2026-06-13 by the file itself), not
+# harvested from the provider. `method: generated` so the economics campaign may replace it with a
+# dated, verbatim transcription; every figure below is unverified until it does.
+method: generated
+generated: '2026-06-13'
 name: Whiplash Plans and Pricing
 description: >-
   Whiplash (now RyderShip by Ryder) provides custom, quote-based pricing for
@@ -33,3 +38,15 @@ plans:
       requirements prohibitive. The platform is optimized for brands shipping
       hundreds to thousands of orders per day. Contact sales for a quote at
       https://www.getwhiplash.com/contact.
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models: []
+  units: []
+  plans:
+  - name: Custom / Quote-Based
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods: []
