@@ -1,0 +1,16 @@
+generated: '2026-10-12'
+method: none
+source:
+- https://zapier.com/apps/whiplash/integrations
+- https://n8n.io/integrations/whiplash/
+- https://composio.dev/toolkits/whiplash
+- https://monid.ai/tools/whiplash
+checked:
+- https://composio.dev/toolkits/whiplash
+- https://monid.ai/tools/whiplash
+- https://n8n.io/integrations/whiplash/
+- https://zapier.com/apps/whiplash/integrations
+summary: null
+marketplace_apps: []
+edges: []
+templates: []
