@@ -189,41 +189,18 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  schemas:
-    CountResponse:
-      type: object
-      properties:
-        count:
-          type: integer
-          description: Total number of matching resources
-    ErrorResponse:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            type: string
   responses:
-    Unauthorized:
-      description: Unauthorized — invalid or missing Bearer token
+    NotFound:
+      description: Resource not found
     UnprocessableEntity:
       description: Validation error — the request body contains invalid data
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    NotFound:
-      description: Resource not found
+    Unauthorized:
+      description: Unauthorized — invalid or missing Bearer token
   parameters:
-    LimitParam:
-      name: limit
-      in: query
-      required: false
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 500
-      description: Number of results per page
     IdParam:
       name: id
       in: path
@@ -240,6 +217,29 @@ components:
         minimum: 1
         default: 1
       description: Page number for pagination
+    LimitParam:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 500
+      description: Number of results per page
+  schemas:
+    CountResponse:
+      type: object
+      properties:
+        count:
+          type: integer
+          description: Total number of matching resources
+    ErrorResponse:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: string
   securitySchemes:
     bearerAuth:
       type: http
